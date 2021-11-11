@@ -1,0 +1,9 @@
+Mudar cor ou texturas
+Rodar objeto
+Mudar fonte de luz
+Mudar localizacao da fonte de Luz
+Mudar a prespetiva do objeto de livre forma
+Abrir e fechar gavetas entre outras peças 
+Ampliar objeto
+Ao abrir gaveta mostrar as dimensoes da gaveta 
+Caso pretenda mostrar as dimensoes do objeto ao clicar num botao
