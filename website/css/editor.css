@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+}
+body {
+    font-family: "Source Sans Pro", Arial, sans-serif;
+}
+
+#myCanvas {
+    position: fixed;
+    width: 100%;
+}
