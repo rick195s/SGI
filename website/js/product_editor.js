@@ -2,6 +2,7 @@ var renderer, camara, cena;
 var width = document.getElementById("canvasDiv").offsetWidth;
 
 init();
+renderizar();
 
 function init() {
     window.addEventListener("resize", () => (width = document.getElementById("canvasDiv").offsetWidth), false);
@@ -44,8 +45,6 @@ function init() {
         // invocar raycaster
         invokeRaycaster(raycaster);
     };
-
-    renderizar();
 }
 
 //------------------------------------------------ INTERACOES COM O RATO ---------------------------------------------------
