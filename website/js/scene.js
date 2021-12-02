@@ -1,7 +1,7 @@
 //------------------------------------------------ CRIAR OBJETO PARA RENDER  ---------------------------------------------------
 
 function create_render(to_canvas) {
-    var renderer = new THREE.WebGL1Renderer({ canvas: to_canvas });
+    var renderer = new THREE.WebGL1Renderer({ canvas: to_canvas, alpha: true });
     renderer.shadowMap.enabled = true;
 
     return renderer;
@@ -9,7 +9,7 @@ function create_render(to_canvas) {
 
 //------------------------------------------------ ADICIONAR CAMARA ---------------------------------------------------
 function create_perspective_camera(aspect) {
-    var camara = new THREE.PerspectiveCamera(50, aspect, 0.1, 500);
+    var camara = new THREE.PerspectiveCamera(60, aspect, 1, 500);
     camara.position.x = 15;
     camara.position.y = 15;
     camara.position.z = 15;
@@ -19,34 +19,23 @@ function create_perspective_camera(aspect) {
 }
 
 //------------------------------------------------ CARREGAR FICHEIRO BLENDER ---------------------------------------------------
-function load_gltf_to(cena, path) {
-    var cubo;
-    var botoes = [];
+function load_gltf_to(cena, path, selectableObjects) {
     var carregador = new THREE.GLTFLoader();
+
     carregador.load(path, function (gltf) {
-        // desativar as luzes importados do blender
         gltf.scene.traverse(function (node) {
             if (node instanceof THREE.Light) node.visible = false;
-
             if (node instanceof THREE.Mesh) {
                 node.castShadow = true;
                 node.receiveShadow = true;
             }
+            node.children.forEach((element) => {
+                selectableObjects.push(element);
+            });
         });
 
         gltf.material = new THREE.MeshStandardMaterial();
         cena.add(gltf.scene);
-
-        // procurar o cubo na cena para depois ser possivel alterar
-        // o seu material quando um dos botoes pequenos forem clicados
-        cubo = cena.getObjectByName("Cubo");
-
-        // adicionar os botoes à lista de botoes para depois
-        // serem filtrados no invokeRaycaster
-        botoes.push(cena.getObjectByName("Botao1"));
-        botoes.push(cena.getObjectByName("Botao2"));
-        botoes.push(cena.getObjectByName("Botao3"));
-        botoes.push(cena.getObjectByName("Botao4"));
     });
 }
 
