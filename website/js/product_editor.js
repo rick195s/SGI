@@ -2,6 +2,7 @@ var renderer, camara, cena;
 var width = document.getElementById("canvasDiv").offsetWidth;
 
 init();
+renderizar();
 
 function init() {
     window.addEventListener("resize", () => (width = document.getElementById("canvasDiv").offsetWidth), false);
@@ -24,7 +25,7 @@ function init() {
     window.addEventListener("resize", () => update_window(renderer, camara, width, window.innerHeight), false);
 
     //load_gltf_to(cena, "../Material/gltf/cena.gltf");
-    load_gltf_to(cena, "../3D Model/workBenchM.gltf");
+    load_gltf_to(cena, "3D Model/workBenchM.gltf");
 
     //------------------------------------------------ ADICIONAR CONTROLOS DE CENARIO ---------------------------------------------------
     var controls = new THREE.OrbitControls(camara, renderer.domElement);
@@ -44,8 +45,6 @@ function init() {
         // invocar raycaster
         invokeRaycaster(raycaster);
     };
-
-    renderizar();
 }
 
 //------------------------------------------------ INTERACOES COM O RATO ---------------------------------------------------
