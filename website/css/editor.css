@@ -9,3 +9,8 @@ body {
     position: fixed;
     width: 100%;
 }
+
+#option_tab {
+    height: 100vh;
+    background-color: whitesmoke;
+}
