@@ -4,9 +4,7 @@ var renderer,
     directLight,
     selectableObjects = [];
 var width = document.getElementById("canvasDiv").offsetWidth;
-
-var raycaster = new THREE.Raycaster();
-var rato = new THREE.Vector2();
+var inter;
 
 init();
 renderizar();
@@ -28,8 +26,6 @@ function init() {
 
     update_window(renderer, camara, width, window.innerHeight);
 
-    window.addEventListener("resize", () => update_window(renderer, camara, width, window.innerHeight), false);
-    //window.addEventListener("mousemove", (evento) => invokeRaycaster(evento));
     load_gltf_to(cena, "3D Model/workBenchM.gltf", selectableObjects);
     //------------------------------------------------ ADICIONAR CONTROLOS DE CENARIO ---------------------------------------------------
     var controls = new THREE.OrbitControls(camara, renderer.domElement);
@@ -46,11 +42,12 @@ function init() {
     directLight.shadow.mapSize.heigh = 1024 * 4;
     cena.add(directLight);
 
+    window.addEventListener("resize", () => update_window(renderer, camara, width, window.innerHeight), false);
+    window.addEventListener("mousemove", (evento) => invokeRaycaster(evento));
+
     myCanvas.onclick = function (evento) {
-        rato.x = (evento.clientX / myCanvas.width) * 2 - 1;
-        rato.y = -(evento.clientY / myCanvas.height) * 2 + 1;
         // invocar raycaster
-        invokeRaycaster();
+        invokeRaycaster(evento, true);
     };
 }
 
@@ -66,19 +63,39 @@ function renderizar() {
 
 //------------------------------------------------ INTERACOES COM O RATO ---------------------------------------------------
 
-function invokeRaycaster() {
+function invokeRaycaster(evento, clicked) {
+    var raycaster = new THREE.Raycaster();
+    var rato = new THREE.Vector2();
+
+    rato.x = (evento.clientX / myCanvas.width) * 2 - 1;
+    rato.y = -(evento.clientY / myCanvas.height) * 2 + 1;
     raycaster.setFromCamera(rato, camara);
+
     // vai procurar na lista de botoes se existe algum desses elementos
     // que foram clicados
 
     var intersected = raycaster.intersectObjects(selectableObjects);
+
     if (intersected.length > 0) {
+        if (clicked) {
+            change_html(inter.object.name);
+        }
         // altera o material do cubo para o material do primeiro
         // botao da lista de selecionados
-        console.log(intersected);
-    }
 
-    // intersected.forEach(function (node) {
-    //     cubo.material = node.object.material;
-    // });
+        if (inter && inter != intersected[0]) {
+            inter.object.material.color.set(0xffffff);
+        }
+
+        inter = intersected[0];
+
+        // material foi clonado, porque existem vários objetos da mesa com
+        // referencia para o mesmo material
+        inter.object.material = inter.object.material.clone();
+        inter.object.material.color.set(0xff0000);
+    } else if (inter) inter.object.material.color.set(0xffffff);
+}
+
+function change_html(name) {
+    document.getElementById("where").innerHTML = name;
 }
