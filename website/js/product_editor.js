@@ -4,7 +4,7 @@ var renderer,
     directLight,
     selectableObjects = [];
 var width = document.getElementById("canvasDiv").offsetWidth;
-var inter;
+var inter, clickedObject;
 
 init();
 renderizar();
@@ -79,9 +79,11 @@ function invokeRaycaster(evento, clicked) {
     if (intersected.length > 0) {
         if (clicked) {
             change_html(inter.object.name);
+            if (clickedObject) {
+                clickedObject.object.material.color.set(0xffffff);
+            }
+            clickedObject = inter;
         }
-        // altera o material do cubo para o material do primeiro
-        // botao da lista de selecionados
 
         if (inter && inter != intersected[0]) {
             inter.object.material.color.set(0xffffff);
@@ -94,6 +96,10 @@ function invokeRaycaster(evento, clicked) {
         inter.object.material = inter.object.material.clone();
         inter.object.material.color.set(0xff0000);
     } else if (inter) inter.object.material.color.set(0xffffff);
+
+    if (clickedObject) {
+        clickedObject.object.material.color.set(0xff0000);
+    }
 }
 
 function change_html(name) {
