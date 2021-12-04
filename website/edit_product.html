@@ -16,15 +16,38 @@
     </head>
     <body>
         <div class="container-fluid">
+            <img src="./img/logo.png" id="logo" alt="laredoute_logo" />
             <div class="row">
-                <div class="col-9" id="canvasDiv" style="padding-left: 0">
+                <div class="col-8" id="canvasDiv" style="padding-left: 0">
                     <canvas id="myCanvas"></canvas>
                 </div>
-                <div class="col-3" id="option_tab">
-                    <div class="row">
-                        <div class="col-md-4 d-flex justify-content-center" id="where">dwq</div>
-                        <div class="col-md-4 d-flex justify-content-center">dwq</div>
-                        <div class="col-md-4 d-flex justify-content-center">dwq</div>
+                <div class="col-4 shadow overflow-auto" id="option_tab">
+                    <div class="row mb-3">
+                        <h3 class="mt-5">Escolha uma cor</h3>
+                        <p id="obejctName">Objecto</p>
+                    </div>
+                    <div class="row" id="item_colors">
+                        <div class="col-lg-4">
+                            <div class="item_color_card">
+                                <span class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>
+                                <p>Azul</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="item_color_card">
+                                <span class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>
+                                <p>Azul</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="item_color_card">
+                                <span class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>
+                                <p>Azul</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="price">
+                        <p>price</p>
                     </div>
                 </div>
             </div>
@@ -33,6 +56,7 @@
         <script src="./node_modules/three/examples/js/controls/OrbitControls.js"></script>
         <script src="./node_modules/three/examples/js/libs/stats.min.js"></script>
         <script src="./node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+        <script src="./js/Classes/Model.js"></script>
         <script src="./js/scene.js"></script>
         <script src="./js/product_editor.js"></script>
     </body>

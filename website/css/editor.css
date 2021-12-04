@@ -1,6 +1,12 @@
-* {
-    margin: 0;
+::-webkit-scrollbar {
+    width: 7px;
 }
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #d0d0d0;
+}
+
 body {
     font-family: "Source Sans Pro", Arial, sans-serif;
 }
@@ -10,7 +16,50 @@ body {
     width: 100%;
 }
 
+#logo {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    height: 25px;
+    z-index: 1;
+}
+
 #option_tab {
     height: 100vh;
-    background-color: whitesmoke;
+    background-color: #ffffff;
+    z-index: 1;
+    position: fixed;
+    right: 0;
+}
+
+#item_colors {
+    margin-bottom: 65px;
+}
+
+#price {
+    width: inherit;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    padding: 15px;
+    background-color: #d0d0d0;
+}
+
+#price p {
+    margin: 0;
+}
+
+/* Style the counter cards */
+.item_color_card {
+    padding: 10px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+.item_color_card:hover {
+    background-color: #f0f6f6;
 }
