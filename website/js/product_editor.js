@@ -4,14 +4,12 @@ var renderer,
     directLight,
     selectableObjects = [];
 var inter, clickedObject;
-var model = new Model(100);
+var model = new Model();
 
 init();
 renderizar();
 
 function init() {
-    console.log(model.getPrice());
-
     var raycaster = new THREE.Raycaster();
     var rato = new THREE.Vector2();
     var width = document.getElementById("canvasDiv").offsetWidth;
@@ -34,8 +32,7 @@ function init() {
 
     update_window(renderer, camara, width, window.innerHeight);
 
-    load_gltf_to(cena, "3D Model/workBenchM.gltf", selectableObjects);
-
+    load_gltf_to(cena, "3D Model/workBenchM.gltf", model);
     add_light_to(cena);
 
     // Resize canvas when page is resized
@@ -73,12 +70,13 @@ function invokeRaycaster(evento, rato, raycaster, clicked) {
     // vai procurar na lista de botoes se existe algum desses elementos
     // que foram clicados
 
-    var intersected = raycaster.intersectObjects(selectableObjects);
+    var intersected = raycaster.intersectObjects(model.getParts());
 
+    console.log(intersected.length);
     if (intersected.length > 0) {
         if (clicked) {
-            change_html(inter.object.name);
-            update_price(model.getPrice());
+            change_html(inter.object);
+
             if (clickedObject) {
                 clickedObject.object.material.color.set(0xffffff);
             }
@@ -93,17 +91,21 @@ function invokeRaycaster(evento, rato, raycaster, clicked) {
 
         // material foi clonado, porque existem vários objetos da mesa com
         // referencia para o mesmo material
-        inter.object.material = inter.object.material.clone();
-        inter.object.material.color.set(0xff0000);
-    } else if (inter) inter.object.material.color.set(0xffffff);
+        inter.object.material = intersected[0].object.material.clone();
+        intersected[0].object.material.color.set(0xff0000);
+    } else if (inter) {
+        inter.object.material.color.set(0xffffff);
+        console.log("entrou");
+    }
 
     if (clickedObject) {
         clickedObject.object.material.color.set(0xff0000);
     }
 }
 
-function change_html(name) {
-    document.getElementById("obejctName").innerHTML = name;
+function change_html(object) {
+    document.getElementById("obejctName").innerHTML = object.name;
+    update_item_colors(object.userData.part.getColors());
 }
 
 function add_light_to(cena) {
@@ -121,5 +123,36 @@ function add_light_to(cena) {
 }
 
 function update_price(price) {
-    console.log((document.getElementById("price").firstElementChild.textContent = price));
+    document.getElementById("price").firstElementChild.textContent = price;
+}
+
+function update_item_colors(colors) {
+    var html = "";
+    if (colors.length > 0) {
+        for (let i = 0; i < colors.length; i++) {
+            html +=
+                '<div class="col-lg-4">' +
+                '<div onclick="change_item_color(' +
+                i +
+                ')" class="item_color_card">' +
+                '<span  class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>' +
+                "<p>" +
+                colors[i].customName +
+                "</p>" +
+                "</div>" +
+                "</div>";
+        }
+    } else {
+        html = '<div class="col-12"><div class="item_color_card"><h4>Sem Cores</h4></div></div>';
+    }
+
+    document.getElementById("item_colors").innerHTML = html;
+}
+
+function change_item_color(value) {
+    var foundObject = model.findPart(clickedObject.object);
+
+    if (foundObject) {
+        //foundObject.material.color = clickedObject.object.userData.part.colors[value];
+    }
 }
