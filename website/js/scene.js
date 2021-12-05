@@ -19,7 +19,7 @@ function create_perspective_camera(aspect) {
 }
 
 //------------------------------------------------ CARREGAR FICHEIRO BLENDER ---------------------------------------------------
-function load_gltf_to(cena, path, selectableObjects) {
+function load_gltf_to(cena, path, model) {
     var carregador = new THREE.GLTFLoader();
 
     carregador.load(path, function (gltf) {
@@ -30,8 +30,11 @@ function load_gltf_to(cena, path, selectableObjects) {
                 node.receiveShadow = true;
             }
             node.children.forEach((element) => {
-                selectableObjects.push(element);
+                element.userData.part = new Part(100);
+                element.userData.part.addColor(element.name);
+                model.addPart(element);
             });
+            update_price(model.getPrice());
         });
 
         gltf.material = new THREE.MeshStandardMaterial();
