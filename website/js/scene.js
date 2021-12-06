@@ -23,7 +23,7 @@ function load_gltf_to(cena, path, model) {
     var carregador = new THREE.GLTFLoader();
 
     carregador.load(path, function (gltf) {
-        gltf.scene.traverse(function (node) {
+        gltf.scene.traverse((node) => {
             if (node instanceof THREE.Light) node.visible = false;
             if (node instanceof THREE.Mesh) {
                 node.castShadow = true;

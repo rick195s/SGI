@@ -1,8 +1,4 @@
-var renderer,
-    camara,
-    cena,
-    directLight,
-    selectableObjects = [];
+var renderer, camara, cena, directLight;
 var inter, clickedObject;
 var model = new Model();
 
@@ -45,9 +41,9 @@ function init() {
         false
     );
 
-    myCanvas.addEventListener("mousemove", (evento) => invokeRaycaster(evento, rato, raycaster));
+    myCanvas.addEventListener("mousemove", (evento) => onHover(evento, rato, raycaster));
     // invocar raycaster
-    myCanvas.onclick = (evento) => invokeRaycaster(evento, rato, raycaster, true);
+    myCanvas.addEventListener("click", () => onClick(raycaster));
 }
 
 //------------------------------------------------ RENDERIZAR O CENARIO ---------------------------------------------------
@@ -60,9 +56,9 @@ function renderizar() {
     renderer.render(cena, camara);
 }
 
-//------------------------------------------------ INTERACOES COM O RATO ---------------------------------------------------
+//------------------------------------------------ HOVER COM O RATO ---------------------------------------------------
 
-function invokeRaycaster(evento, rato, raycaster, clicked) {
+function onHover(evento, rato, raycaster) {
     rato.x = (evento.clientX / myCanvas.width) * 2 - 1;
     rato.y = -(evento.clientY / myCanvas.height) * 2 + 1;
     raycaster.setFromCamera(rato, camara);
@@ -72,19 +68,9 @@ function invokeRaycaster(evento, rato, raycaster, clicked) {
 
     var intersected = raycaster.intersectObjects(model.getParts());
 
-    console.log(intersected.length);
     if (intersected.length > 0) {
-        if (clicked) {
-            change_html(inter.object);
-
-            if (clickedObject) {
-                clickedObject.object.material.color.set(0xffffff);
-            }
-            clickedObject = inter;
-        }
-
         if (inter && inter != intersected[0]) {
-            inter.object.material.color.set(0xffffff);
+            inter.object.material = inter.object.userData.oldMaterial;
         }
 
         inter = intersected[0];
@@ -92,14 +78,23 @@ function invokeRaycaster(evento, rato, raycaster, clicked) {
         // material foi clonado, porque existem vários objetos da mesa com
         // referencia para o mesmo material
         inter.object.material = intersected[0].object.material.clone();
-        intersected[0].object.material.color.set(0xff0000);
+        inter.object.userData.oldMaterial = inter.object.material.clone();
+        inter.object.material.color.set(0xff0000);
     } else if (inter) {
-        inter.object.material.color.set(0xffffff);
-        console.log("entrou");
+        inter.object.material = inter.object.userData.oldMaterial;
+        inter = null;
     }
+}
 
-    if (clickedObject) {
-        clickedObject.object.material.color.set(0xff0000);
+function onClick(raycaster) {
+    // vai procurar na lista de botoes se existe algum desses elementos
+    // que foram clicados
+
+    var intersected = raycaster.intersectObjects(model.getParts());
+
+    if (intersected.length > 0) {
+        clickedObject = intersected[0];
+        change_html(clickedObject.object);
     }
 }
 
@@ -153,6 +148,7 @@ function change_item_color(value) {
     var foundObject = model.findPart(clickedObject.object);
 
     if (foundObject) {
-        //foundObject.material.color = clickedObject.object.userData.part.colors[value];
+        foundObject.material.color = clickedObject.object.userData.part.colors[value];
+        foundObject.userData.oldMaterial = foundObject.material;
     }
 }
