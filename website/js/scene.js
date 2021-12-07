@@ -47,3 +47,17 @@ function update_window(renderer, camara, width, height) {
     camara.aspect = width / height;
     camara.updateProjectionMatrix();
 }
+
+function add_light_to(scene) {
+    //------------------------------------------------ ADICIONAR LUZ AMBIENTE AO sceneRIO ---------------------------------------------------
+    var luzPoint = new THREE.AmbientLight(0xffffff, 4);
+    scene.add(luzPoint);
+
+    // Sun Light
+    directLight = new THREE.DirectionalLight(0xffa95c, 4);
+    directLight.castShadow = true;
+    directLight.shadow.bias = -0.0001;
+    directLight.shadow.mapSize.width = 1024 * 4;
+    directLight.shadow.mapSize.heigh = 1024 * 4;
+    scene.add(directLight);
+}
