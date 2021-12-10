@@ -5,17 +5,16 @@ class Part {
         this.selectedMaterialIndex = -1;
         this.colors = [];
         this.materials = [];
-        console.log(this);
+
+        this.addColor("default");
     }
 
     getIncreasePrice() {
         var increasePrice = 0;
 
-        if (this.colors.length > 0 && this.selectedColorIndex >= 0)
-            increasePrice += this.colors[this.selectedColorIndex].increasePrice;
+        if (this.selectedColorIndex >= 0) increasePrice += this.colors[this.selectedColorIndex].increasePrice;
+        if (this.selectedMaterialIndex >= 0) increasePrice += this.materials[this.selectedMaterialIndex].increasePrice;
 
-        if (this.materials.length > 0 && this.selectedMaterialIndex >= 0)
-            increasePrice += this.materials[this.selectedMaterialIndex].increasePrice;
         return this.price + increasePrice;
     }
 
@@ -43,6 +42,11 @@ class Part {
                 color.setHex(0x0000ff);
                 color.name = "Azul";
                 color.increasePrice = 100;
+                break;
+            case "default":
+                color.setHex(0xffffff);
+                color.name = "Normal";
+                color.increasePrice = 0;
                 break;
             default:
                 color.setHex(0x00ff00);
