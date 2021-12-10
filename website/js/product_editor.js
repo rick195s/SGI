@@ -103,12 +103,12 @@ function change_html(object) {
     update_item_colors(object.userData.part.getColors());
 }
 
-function update_price(price) {
-    document.getElementById("price").firstElementChild.textContent = price;
+function update_price() {
+    document.getElementById("price").firstElementChild.textContent = model.getPrice();
 }
 
 function update_item_colors(colors) {
-    var html = "";
+    html = "";
 
     // Updating the html of the colors tab
     if (colors.length > 0) {
@@ -118,7 +118,7 @@ function update_item_colors(colors) {
                 '<div  class="item_color_card">' +
                 '<span  class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>' +
                 "<p>" +
-                colors[i].customName +
+                colors[i].name +
                 "</p>" +
                 "</div>" +
                 "</div>";
@@ -152,6 +152,8 @@ function change_item_color(value, save) {
     // Change the object color permanently
     if (save) {
         clickedObject.object.userData.oldMaterial = clickedObject.object.material;
+        clickedObject.object.material.color = clickedObject.object.userData.part.changeColor(value);
+        update_price();
     }
 }
 
