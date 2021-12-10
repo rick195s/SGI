@@ -31,10 +31,12 @@ function load_gltf_to(cena, path, model) {
             }
             node.children.forEach((element) => {
                 element.userData.part = new Part(100);
+
                 element.userData.part.addColor(element.name);
+                element.userData.defaultMaterial = element.material;
                 model.addPart(element);
             });
-            update_price(model.getPrice());
+            update_price();
         });
 
         gltf.material = new THREE.MeshStandardMaterial();

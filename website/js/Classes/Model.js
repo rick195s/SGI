@@ -1,15 +1,18 @@
 class Model {
     constructor() {
         this.parts = [];
-        this.price = 0;
     }
 
     getPrice() {
-        return this.price;
+        var totalPrice = 0;
+        this.parts.forEach((element) => {
+            totalPrice += element.userData.part.getIncreasePrice();
+        });
+
+        return totalPrice;
     }
 
     addPart(part) {
-        this.price += part.userData.part.increasePrice;
         this.parts.push(part);
     }
 
