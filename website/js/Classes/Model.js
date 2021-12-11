@@ -5,8 +5,8 @@ class Model {
 
     getPrice() {
         var totalPrice = 0;
-        this.parts.forEach((element) => {
-            totalPrice += element.userData.part.getIncreasePrice();
+        this.parts.forEach((part) => {
+            totalPrice += part.userData.part.getIncreasePrice();
         });
 
         return totalPrice;
@@ -20,11 +20,11 @@ class Model {
         return this.parts;
     }
 
-    findPart(part) {
+    findPart() {
         var found = null;
-        this.parts.forEach((element) => {
-            if (element.name.localeCompare(part.name) == 0) {
-                found = element;
+        this.parts.forEach((part) => {
+            if (part.name.localeCompare(part.name) == 0) {
+                found = part;
             }
         });
 

@@ -29,12 +29,12 @@ function load_gltf_to(cena, path, model) {
                 node.castShadow = true;
                 node.receiveShadow = true;
             }
-            node.children.forEach((element) => {
-                element.userData.part = new Part(100);
+            node.children.forEach((part) => {
+                part.userData.part = new Part(100);
 
-                element.userData.part.addColor(element.name);
-                element.userData.defaultMaterial = element.material;
-                model.addPart(element);
+                part.userData.part.addColor(part.name);
+                part.userData.defaultMaterial = part.material;
+                model.addPart(part);
             });
             update_price();
         });
