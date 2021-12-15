@@ -3,6 +3,10 @@ var inter, clickedObject;
 var model = new Model();
 
 init();
+
+var relogio = new THREE.Clock();
+var misturador = new THREE.AnimationMixer(scene);
+
 renderizar();
 
 function init() {
@@ -28,7 +32,7 @@ function init() {
 
     update_window(renderer, camera, width, window.innerHeight);
 
-    load_gltf_to(scene, "3D Model/workBenchM.gltf", model);
+    load_gltf_to(scene, "3D Model/workBenchM_animation.gltf", model);
     add_light_to(scene);
 
     // Resize canvas when page is resized
@@ -52,7 +56,7 @@ function init() {
 function renderizar() {
     // caso exista algum objeto a ser animado no js podemos usar
     requestAnimationFrame(renderizar);
-
+    misturador.update(relogio.getDelta());
     // Updating light direction when user moves camera
     directLight.position.set(camera.position.x + 5, camera.position.y + 15, camera.position.z + 5);
     renderer.render(scene, camera);
@@ -101,6 +105,29 @@ function change_html(object) {
     document.getElementById("obejctName").innerHTML = object.name;
 
     update_item_colors(object.userData.part.getColors());
+}
+
+function show_animations() {
+    html = "";
+
+    // Updating the html of the colors tab
+    if (colors.length > 0) {
+        for (let i = 0; i < colors.length; i++) {
+            html +=
+                '<div class="col-lg-4">' +
+                '<div  class="item_color_card">' +
+                '<span  class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>' +
+                "<p>" +
+                colors[i].name +
+                "</p>" +
+                "</div>" +
+                "</div>";
+        }
+    } else {
+        html = '<div class="col-12"><div class="item_color_card"><h4>Sem Cores</h4></div></div>';
+    }
+
+    document.getElementById("item_colors").innerHTML = html;
 }
 
 function update_price() {
