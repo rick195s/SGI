@@ -28,17 +28,17 @@ function load_gltf_to(cena, path, model) {
             if (node instanceof THREE.Mesh) {
                 node.castShadow = true;
                 node.receiveShadow = true;
+                node.userData.part = new Part(100);
+                node.userData.part.addColor(node.name);
+                node.userData.defaultMaterial = node.material;
+                model.addPart(node);
             }
-            node.children.forEach((part) => {
-                part.userData.part = new Part(100);
 
-                part.userData.part.addColor(part.name);
-                part.userData.defaultMaterial = part.material;
-                model.addPart(part);
-            });
             update_price();
         });
 
+        model.addAnimations(gltf.animations);
+        //show_animations()
         gltf.material = new THREE.MeshStandardMaterial();
         cena.add(gltf.scene);
     });

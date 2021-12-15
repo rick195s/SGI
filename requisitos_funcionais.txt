@@ -8,3 +8,7 @@ Ampliar objeto
 Ao abrir gaveta mostrar as dimensoes da gaveta 
 Caso pretenda mostrar as dimensoes do objeto ao clicar num botao
 Hover em cima da cor da preview da cor e so mete cor se utilizador clica
+
+base de dados com tabela de modelo com path, nome, etc do modelo e tabela com partes 
+e as suas cores e materiais disponiveis
+

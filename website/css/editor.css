@@ -16,6 +16,10 @@ body {
     width: 100%;
 }
 
+#canvasDiv {
+    position: relative;
+}
+
 #logo {
     position: fixed;
     top: 25px;
@@ -62,4 +66,12 @@ body {
 
 .item_color_card:hover {
     background-color: #f0f6f6;
+}
+
+#animations {
+    display: flex;
+    position: absolute;
+    z-index: 1;
+    margin: 0;
+    width: 100%;
 }

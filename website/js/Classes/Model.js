@@ -1,6 +1,7 @@
 class Model {
     constructor() {
         this.parts = [];
+        this.animations = [];
     }
 
     getPrice() {
@@ -14,6 +15,10 @@ class Model {
 
     addPart(part) {
         this.parts.push(part);
+    }
+
+    addAnimations(animations) {
+        this.animations = [...this.animations, ...animations];
     }
 
     getParts() {
