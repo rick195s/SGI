@@ -21,8 +21,11 @@
             <div class="row">
                 <div class="col-8" id="canvasDiv" style="padding-left: 0">
                     <canvas id="myCanvas"></canvas>
-                    <div id="animations">
-                        <span class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>
+                    <div id="animationsOutDiv" class="d-flex align-items-center">
+                        <h6>Animações</h6>
+                        <div style="display: flex; flex-direction: row" id="animationsInDiv">
+                            <span>Objeto sem animações</span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-4 shadow overflow-auto" id="option_tab">
