@@ -38,7 +38,7 @@ function load_gltf_to(cena, path, model) {
         });
 
         model.addAnimations(gltf.animations);
-        //show_animations()
+        show_animations();
         gltf.material = new THREE.MeshStandardMaterial();
         cena.add(gltf.scene);
     });
