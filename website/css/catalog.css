@@ -1,0 +1,59 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color:#EDEDED !important;
+  	 /* Hide scrollbars */
+}
+.navbar {
+    background:#6ab446;
+}
+.nav-link,
+.navbar-brand {
+    color: #fff;
+    cursor: pointer;
+}
+.nav-link {
+    margin-right: 1em !important;
+}
+.nav-link:hover {
+    color: #000;
+}
+.navbar-collapse {
+    justify-content: flex-end;
+}
+footer {
+	
+	background-color: #DD2F2F !important;
+	color: white !important;
+	border-top: 10px solid #000000;
+	padding-left: 20px;
+	bottom:0px;
+}
+
+#logo{
+  	
+    top: 25px;
+    left: 25px;
+    height: 25px;
+    z-index: 1;
+   
+}
+
+.product.tumbnail img:hover {
+  box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
+}
+
+.product{
+	border: 100px;
+	box-shadow: 0 5px 25px 0 transparent;
+  	transition: 0.3s linear;
+  	padding-top: 0;
+}
+
+.foto-produto{
+	width:320px; /* you can use % */
+    height: auto;
+	border: 10px solid transparent;
+	border-color:#DD2F2F;
+
+}

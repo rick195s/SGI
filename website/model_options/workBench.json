@@ -1,0 +1,26 @@
+
+{
+    "parts":{
+        "door": {
+            "colors":
+            [
+                { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
+                { "name": "verxsasde", "hex": "0x00ff00","price": 200 },
+                { "name": "azul", "hex": "0x0000ff","price": 300 }
+            ]
+        },
+        "workBench": {
+            "colors":
+            [
+                { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
+                { "name": "verde", "hex": "0x00ff00","price": 200 },
+                { "name": "azul", "hex": "0x0000ff","price": 300 }
+            ]
+        }
+    },
+
+    "textures":
+        [    
+            { "name":"madeira clara", "path": "Wood1_2k_Color.jpg", "price": 200, "material":"WoodM" }
+        ]
+}

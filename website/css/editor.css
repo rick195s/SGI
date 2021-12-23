@@ -37,24 +37,27 @@ body {
 }
 
 #item_materials {
-    margin-bottom: 65px;
+    margin-bottom: 100px;
 }
 
-#price {
+#priceDiv {
+    display: block;
     width: inherit;
     position: fixed;
     bottom: 0;
     text-align: center;
-    padding: 15px;
-    background-color: #d0d0d0;
+    padding: 20px;
+    color: white;
+    background-color: #191919;
 }
 
-#price p {
-    margin: 0;
+#priceDiv * {
+    display: inline;
 }
 
 /* Style the counter cards */
-.item_color_card {
+.item_color_card,
+.item_texture_card {
     padding: 10px;
     flex-direction: column;
     display: flex;
@@ -64,7 +67,8 @@ body {
     border-radius: 4px;
 }
 
-.item_color_card:hover {
+.item_color_card:hover,
+.item_texture_card:hover {
     background-color: #f0f6f6;
     cursor: pointer;
 }
