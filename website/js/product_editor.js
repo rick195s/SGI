@@ -5,7 +5,7 @@ var model = new Model();
 init();
 
 var relogio = new THREE.Clock();
-var misturador = new THREE.AnimationMixer(scene);
+var mixer = new THREE.AnimationMixer(scene);
 
 renderizar();
 
@@ -56,7 +56,7 @@ function init() {
 function renderizar() {
     // caso exista algum objeto a ser animado no js podemos usar
     requestAnimationFrame(renderizar);
-    misturador.update(relogio.getDelta());
+    mixer.update(relogio.getDelta());
     // Updating light direction when user moves camera
     directLight.position.set(camera.position.x + 5, camera.position.y + 15, camera.position.z + 5);
     renderer.render(scene, camera);
@@ -71,14 +71,12 @@ function onHover(evento, mouse, raycaster) {
     raycaster.setFromCamera(mouse, camera);
 
     var intersected = raycaster.intersectObjects(model.getParts());
-
     if (intersected.length > 0) {
         if (inter && inter != intersected[0]) {
             inter.object.material = inter.object.userData.oldMaterial;
         }
 
         inter = intersected[0];
-
         // Cloning the material because exist objects sharing the same material
         inter.object.material = intersected[0].object.material.clone();
 
@@ -94,58 +92,11 @@ function onHover(evento, mouse, raycaster) {
 
 function onClick(raycaster) {
     var intersected = raycaster.intersectObjects(model.getParts());
-
     if (intersected.length > 0) {
         clickedObject = intersected[0];
+
         change_html(clickedObject.object);
     }
-}
-
-function change_html(object) {
-    document.getElementById("obejctName").innerHTML = object.name;
-
-    update_item_colors(object.userData.part.getColors());
-}
-
-function show_animations() {
-    html = "";
-
-    // Updating the html of the colors tab
-    if (model.animations.length > 0) {
-        for (let i = 0; i < model.animations.length; i++) {
-            html +=
-                '<span class="rounded-circle animationBtn">' +
-                "<img " +
-                'src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/How_to_use_icon.svg/1200px-How_to_use_icon.svg.png"' +
-                'alt=""' +
-                "/>" +
-                "</span>";
-        }
-    } else {
-        html = "<span>Objeto sem animações</span>";
-    }
-
-    document.getElementById("animationsInDiv").innerHTML = html;
-
-    var elements = document.getElementsByClassName("animationBtn");
-
-    // Add events that will be activated by the user interactions
-    for (let i = 0; i < elements.length; i++) {
-        // Not using addEventListener because each element just need one
-        // action for each event
-        elements[i].onclick = () => start_animation(model.animations[i].name);
-    }
-}
-
-function start_animation(name) {
-    console.log(name);
-    var clipe = THREE.AnimationClip.findByName(model.animations, name);
-    var acao = misturador.clipAction(clipe);
-    acao.play();
-}
-
-function update_price() {
-    document.getElementById("price").firstElementChild.textContent = model.getPrice();
 }
 
 function update_item_colors(colors) {
@@ -201,4 +152,105 @@ function change_item_color(value, save) {
 function reset_item_color() {
     // Reset the object material
     clickedObject.object.material = clickedObject.object.userData.oldMaterial;
+}
+
+function change_html(object) {
+    document.getElementById("obejctName").innerHTML = object.name;
+    update_item_colors(object.userData.part.getColors());
+    update_item_textures(model.getTexture(object.material.name));
+}
+
+function update_item_textures(textures) {
+    html = "";
+
+    // Updating the html of the colors tab
+    if (textures.length > 0) {
+        for (let i = 0; i < textures.length; i++) {
+            html +=
+                '<div class="col-lg-4">' +
+                '<div  class="item_texture_card">' +
+                '<span  class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>' +
+                "<p>" +
+                textures[i].name +
+                "</p>" +
+                "</div>" +
+                "</div>";
+        }
+    } else {
+        html = '<div class="col-12"><div class="item_texture_card"><h4>Sem Texturas</h4></div></div>';
+    }
+
+    document.getElementById("item_textures").innerHTML = html;
+
+    // Find all color elements of the right side tab
+    var elements = document.getElementsByClassName("item_texture_card");
+
+    // Add events that will be activated by the user interactions
+    for (let i = 0; i < elements.length; i++) {
+        // Not using addEventListener because each element just need one
+        // action for each event
+        elements[i].onclick = () => change_item_texture(i, true);
+        elements[i].onmouseover = () => change_item_color(i, false);
+        elements[i].onmouseout = () => reset_item_color();
+    }
+}
+
+function change_item_texture(value, save) {
+    clickedObject.object.material.map = THREE.ImageUtils.loadTexture("3D Model/materials/Wood1_2k_Color.jpg");
+    //clickedObject.object.material.uniforms.texture = THREE.ImageUtils.loadTexture("3D Model/Wood1_2k_Color.jpg");
+}
+
+function show_animations() {
+    html = "";
+
+    // Updating the html of the colors tab
+    if (model.animations.length > 0) {
+        for (let i = 0; i < model.animations.length; i++) {
+            html +=
+                '<span class="rounded-circle animationBtn">' +
+                "<img " +
+                'src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/How_to_use_icon.svg/1200px-How_to_use_icon.svg.png"' +
+                'alt=""' +
+                "/>" +
+                "</span>";
+        }
+    } else {
+        html = "<span>Objeto sem animações</span>";
+    }
+
+    document.getElementById("animationsInDiv").innerHTML = html;
+
+    var elements = document.getElementsByClassName("animationBtn");
+
+    // Add events that will be activated by the user interactions
+    for (let i = 0; i < elements.length; i++) {
+        // Not using addEventListener because each element just need one
+        // action for each event
+        elements[i].onclick = () => start_animation(model.animations[i].name);
+    }
+}
+
+function start_animation(name) {
+    var clipe = THREE.AnimationClip.findByName(model.animations, name);
+    var action = mixer.clipAction(clipe);
+
+    if (action.paused) {
+        // two animations because the object was animated previously
+        // and we just want the LoopPingPong to execute one time (backwards)
+        action.setLoop(THREE.LoopPingPong, 2);
+        action.paused = false;
+        action.clampWhenFinished = false;
+    } else {
+        // stop() do the reset() of the animation and removes the
+        // animation from the mixer
+        action.stop();
+        action.setLoop(THREE.LoopOnce);
+        action.clampWhenFinished = true;
+    }
+
+    action.play();
+}
+
+function update_price() {
+    document.getElementById("price").innerHTML = model.getPrice() + "€";
 }

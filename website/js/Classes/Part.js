@@ -4,9 +4,6 @@ class Part {
         this.selectedColorIndex = -1;
         this.selectedMaterialIndex = -1;
         this.colors = [];
-        this.materials = [];
-
-        this.addColor("default");
     }
 
     getIncreasePrice() {
@@ -21,56 +18,33 @@ class Part {
         return this.price + increasePrice;
     }
 
+    getSelectedColor() {
+        return this.colors[this.selectedColorIndex];
+    }
+
     getColors() {
         return this.colors;
     }
 
-    getMateriais() {
-        return this.materials;
+    addDefaultColor(color) {
+        var defaultColor = new Color(color);
+        defaultColor.increasePrice = 0;
+        defaultColor.name = "Normal";
+        this.colors.push(defaultColor);
+        this.selectedColorIndex = this.colors.indexOf(defaultColor);
     }
 
-    addColor(name) {
-        this.colors.push(this.findColor(name));
-    }
-
-    addMaterial(material) {
-        this.materials.push(material);
-    }
-
-    findColor(name) {
-        var color = new Color();
-
-        switch (name) {
-            case "door":
-                color.setHex(0x0000ff);
-                color.name = "Azul";
-                color.increasePrice = 100;
-                break;
-            case "default":
-                color.setHex(0xffffff);
-                color.name = "Normal";
-                color.increasePrice = 0;
-                break;
-            default:
-                color.setHex(0x00ff00);
-                color.name = "Verde";
-                color.increasePrice = 200;
-                break;
-        }
-
-        return color;
+    async addColors(colors) {
+        this.colors = this.colors.concat(await colors);
     }
 
     changeColor(value) {
-        console.log(value);
         if (value < 0 || value > this.colors.length - 1) {
             alert("Color does not exist " + value);
             return;
         }
 
         this.selectedColorIndex = value;
-        console.log(this.colors[this.selectedColorIndex].increasePrice);
-
         return this.colors[value];
     }
 }
