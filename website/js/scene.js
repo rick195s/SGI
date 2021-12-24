@@ -9,13 +9,13 @@ function create_render(to_canvas) {
 
 //------------------------------------------------ ADICIONAR CAMARA ---------------------------------------------------
 function create_perspective_camera(aspect) {
-    var camara = new THREE.PerspectiveCamera(60, aspect, 1, 500);
-    camara.position.x = 15;
-    camara.position.y = 15;
-    camara.position.z = 15;
-    camara.lookAt(0, 0, 0);
+    var camera = new THREE.PerspectiveCamera(60, aspect, 1, 500);
+    camera.position.x = 0;
+    camera.position.y = 10;
+    camera.position.z = 15;
+    camera.lookAt(0, 2.5, 0);
 
-    return camara;
+    return camera;
 }
 
 //------------------------------------------------ CARREGAR FICHEIRO BLENDER ---------------------------------------------------
@@ -37,9 +37,9 @@ function load_gltf_to(cena, path, model) {
             update_price();
         });
 
-        gltf.parser.getDependencies("material").then((materials) => {
-            console.log(materials);
-        });
+        // gltf.parser.getDependencies("material").then((materials) => {
+        //     console.log(materials);
+        // });
         model.addTextures(getTexturesFromJson());
         model.addAnimations(gltf.animations);
         show_animations();
@@ -79,13 +79,7 @@ async function getTexturesFromJson() {
     return await fetch("model_options/workBench.json")
         .then((response) => response.json())
         .then((data) => {
-            var textures = [];
-            if (data.textures) {
-                for (var i = 0; i < data.textures.length; i++) {
-                    textures = textures.concat(data.textures);
-                }
-            }
-            return textures;
+            return data.textures;
         })
         .catch((error) => {
             console.error(error);

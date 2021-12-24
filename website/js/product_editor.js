@@ -64,96 +64,6 @@ function renderizar() {
 
 //------------------------------------------------ HOVER COM O mouse ---------------------------------------------------
 
-function onHover(evento, mouse, raycaster) {
-    // Updating the mouse position
-    mouse.x = (evento.clientX / myCanvas.width) * 2 - 1;
-    mouse.y = -(evento.clientY / myCanvas.height) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-
-    var intersected = raycaster.intersectObjects(model.getParts());
-    if (intersected.length > 0) {
-        if (inter && inter != intersected[0]) {
-            inter.object.material = inter.object.userData.oldMaterial;
-        }
-
-        inter = intersected[0];
-        // Cloning the material because exist objects sharing the same material
-        inter.object.material = intersected[0].object.material.clone();
-
-        inter.object.userData.oldMaterial = inter.object.material.clone();
-
-        // Giving user the prespective of something happening
-        inter.object.material.color.set(0xff0000);
-    } else if (inter) {
-        inter.object.material = inter.object.userData.oldMaterial;
-        inter = null;
-    }
-}
-
-function onClick(raycaster) {
-    var intersected = raycaster.intersectObjects(model.getParts());
-    if (intersected.length > 0) {
-        clickedObject = intersected[0];
-
-        change_html(clickedObject.object);
-    }
-}
-
-function update_item_colors(colors) {
-    html = "";
-
-    // Updating the html of the colors tab
-    if (colors.length > 0) {
-        for (let i = 0; i < colors.length; i++) {
-            html +=
-                '<div class="col-lg-4">' +
-                '<div  class="item_color_card">' +
-                '<span  class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>' +
-                "<p>" +
-                colors[i].name +
-                "</p>" +
-                "</div>" +
-                "</div>";
-        }
-    } else {
-        html = '<div class="col-12"><div class="item_color_card"><h4>Sem Cores</h4></div></div>';
-    }
-
-    document.getElementById("item_colors").innerHTML = html;
-
-    // Find all color elements of the right side tab
-    var elements = document.getElementsByClassName("item_color_card");
-
-    // Add events that will be activated by the user interactions
-    for (let i = 0; i < elements.length; i++) {
-        // Not using addEventListener because each element just need one
-        // action for each event
-        elements[i].onclick = () => change_item_color(i, true);
-        elements[i].onmouseover = () => change_item_color(i, false);
-        elements[i].onmouseout = () => reset_item_color();
-    }
-}
-
-function change_item_color(value, save) {
-    // Save temporarily the material so then it's possible to reset it
-    clickedObject.object.userData.oldMaterial = clickedObject.object.material.clone();
-
-    // Change the live object color
-    clickedObject.object.material.color = clickedObject.object.userData.part.colors[value];
-
-    // Change the object color permanently
-    if (save) {
-        clickedObject.object.userData.oldMaterial = clickedObject.object.material;
-        clickedObject.object.material.color = clickedObject.object.userData.part.changeColor(value);
-        update_price();
-    }
-}
-
-function reset_item_color() {
-    // Reset the object material
-    clickedObject.object.material = clickedObject.object.userData.oldMaterial;
-}
-
 function change_html(object) {
     document.getElementById("obejctName").innerHTML = object.name;
     update_item_colors(object.userData.part.getColors());
@@ -190,14 +100,50 @@ function update_item_textures(textures) {
         // Not using addEventListener because each element just need one
         // action for each event
         elements[i].onclick = () => change_item_texture(i, true);
-        elements[i].onmouseover = () => change_item_color(i, false);
-        elements[i].onmouseout = () => reset_item_color();
+        //elements[i].onmouseover = () => change_item_texture(i, false);
+        //elements[i].onmouseout = () => reset_item_color();
     }
 }
 
-function change_item_texture(value, save) {
-    clickedObject.object.material.map = THREE.ImageUtils.loadTexture("3D Model/materials/Wood1_2k_Color.jpg");
-    //clickedObject.object.material.uniforms.texture = THREE.ImageUtils.loadTexture("3D Model/Wood1_2k_Color.jpg");
+function update_item_colors(colors) {
+    html = "";
+
+    var images = render_images(colors);
+
+    // Updating the html of the colors tab
+    if (colors.length > 0) {
+        for (let i = 0; i < colors.length; i++) {
+            console.log(images[i].src);
+
+            html +=
+                '<div class="col-lg-4">' +
+                '<div  class="item_color_card">' +
+                '<img  src="' +
+                images[i].src +
+                '" class="bg-dark rounded-circle" style="height: 75px; width: 75px">' +
+                "<p>" +
+                colors[i].name +
+                "</p>" +
+                "</div>" +
+                "</div>";
+        }
+    } else {
+        html = '<div class="col-12"><div class="item_color_card"><h4>Sem Cores</h4></div></div>';
+    }
+
+    document.getElementById("item_colors").innerHTML = html;
+
+    // Find all color elements of the right side tab
+    var elements = document.getElementsByClassName("item_color_card");
+
+    // Add events that will be activated by the user interactions
+    for (let i = 0; i < elements.length; i++) {
+        // Not using addEventListener because each element just need one
+        // action for each event
+        elements[i].onclick = () => change_item_color(i, true);
+        elements[i].onmouseover = () => change_item_color(i, false);
+        elements[i].onmouseout = () => reset_item_color();
+    }
 }
 
 function show_animations() {
@@ -230,27 +176,40 @@ function show_animations() {
     }
 }
 
-function start_animation(name) {
-    var clipe = THREE.AnimationClip.findByName(model.animations, name);
-    var action = mixer.clipAction(clipe);
-
-    if (action.paused) {
-        // two animations because the object was animated previously
-        // and we just want the LoopPingPong to execute one time (backwards)
-        action.setLoop(THREE.LoopPingPong, 2);
-        action.paused = false;
-        action.clampWhenFinished = false;
-    } else {
-        // stop() do the reset() of the animation and removes the
-        // animation from the mixer
-        action.stop();
-        action.setLoop(THREE.LoopOnce);
-        action.clampWhenFinished = true;
-    }
-
-    action.play();
-}
-
 function update_price() {
     document.getElementById("price").innerHTML = model.getPrice() + "€";
+}
+
+function render_images(colors) {
+    var screen_camera = create_perspective_camera(window.innerWidth / window.innerHeight);
+    screen_camera.position.copy(clickedObject.object.position);
+    screen_camera.position.y *= 2;
+    screen_camera.position.x *= 1.5;
+    screen_camera.position.z *= 2;
+    screen_camera.lookAt(clickedObject.object.position);
+
+    var width = document.getElementById("canvasDiv").offsetWidth;
+
+    update_window(renderer, screen_camera, width, window.innerHeight);
+    var images = [];
+    for (let i = 0; i < colors.length; i++) {
+        var img = new Image();
+        clickedObject.object.material.color.copy(colors[i]);
+        renderer.render(scene, screen_camera);
+        img.src = renderer.domElement.toDataURL();
+        images = images.concat(img);
+    }
+    return images;
+    // renderer.render(scene, screen_camera);
+    // renderer.domElement.toBlob(
+    //     function (blob) {
+    //         var a = document.createElement("a");
+    //         var url = URL.createObjectURL(blob);
+    //         a.href = url;
+    //         a.download = "canvas.png";
+    //         a.click();
+    //     },
+    //     "image/png",
+    //     1.0
+    // );
 }
