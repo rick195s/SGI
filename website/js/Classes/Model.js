@@ -26,8 +26,6 @@ class Model {
     }
 
     async addTextures(textures) {
-        console.log(await textures);
-
         this.textures = this.textures.concat(await textures);
     }
 
