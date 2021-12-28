@@ -113,8 +113,6 @@ function update_item_colors(colors) {
     // Updating the html of the colors tab
     if (colors.length > 0) {
         for (let i = 0; i < colors.length; i++) {
-            console.log(images[i].src);
-
             html +=
                 '<div class="col-lg-4">' +
                 '<div  class="item_color_card">' +
@@ -184,7 +182,6 @@ function render_images(colors) {
     var screen_camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     screen_camera.position.copy(clickedObject.object.position);
     screen_camera.position.y *= 2;
-    screen_camera.position.x *= 1.5;
     screen_camera.position.z *= 2;
     screen_camera.lookAt(clickedObject.object.position);
 
@@ -199,6 +196,7 @@ function render_images(colors) {
         img.src = renderer.domElement.toDataURL();
         images = images.concat(img);
     }
+    reset_item_color();
     return images;
     // renderer.render(scene, screen_camera);
     // renderer.domElement.toBlob(
