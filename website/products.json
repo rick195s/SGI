@@ -1,0 +1,9 @@
+[
+    {
+        "name": "workBench",
+        "img": "img/mobilia.png",
+        "basePrice": 100,
+        "model_3d": "3D Model/workBenchM_animation.gltf",
+        "model_options": "model_options/workBench.json"
+    }
+]
