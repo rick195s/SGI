@@ -26,8 +26,12 @@ function load_gltf_to(cena, path, model) {
         gltf.scene.traverse((node) => {
             if (node instanceof THREE.Light) node.visible = false;
             if (node instanceof THREE.Mesh) {
-                node.castShadow = true;
-                node.receiveShadow = true;
+                // node.castShadow = true;
+                // node.receiveShadow = true;
+                // Cloning the material because exist objects sharing the same material
+                node.material = node.material.clone();
+                // Storing a back-up material
+                node.userData.oldMaterial = node.material.clone();
                 node.userData.part = new Part(100);
                 node.userData.part.addDefaultColor(node.material.color);
                 node.userData.part.addColors(getColorsFromJson(node.name));
@@ -88,14 +92,14 @@ async function getTexturesFromJson() {
 
 function add_light_to(scene) {
     //------------------------------------------------ ADICIONAR LUZ AMBIENTE AO sceneRIO ---------------------------------------------------
-    var luzPoint = new THREE.AmbientLight(0xffffff, 4);
+    var luzPoint = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(luzPoint);
 
     // Sun Light
     directLight = new THREE.DirectionalLight(0xffa95c, 4);
-    directLight.castShadow = true;
-    directLight.shadow.bias = -0.0001;
-    directLight.shadow.mapSize.width = 1024 * 4;
-    directLight.shadow.mapSize.heigh = 1024 * 4;
+    // directLight.castShadow = true;
+    // directLight.shadow.bias = -0.0001;
+    // directLight.shadow.mapSize.width = 1024 * 4;
+    // directLight.shadow.mapSize.heigh = 1024 * 4;
     scene.add(directLight);
 }

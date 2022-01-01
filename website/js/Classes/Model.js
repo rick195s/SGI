@@ -14,10 +14,11 @@ class Model {
         return totalPrice;
     }
 
-    getTexture(name) {
+    getTextures(name) {
+        // find this.textures with same name as 'name'
         var validTextures = [];
         for (let index = 0; index < this.textures.length; index++) {
-            if (this.textures[index].material.localeCompare(name) == 0) {
+            if (this.textures[index].materialName.localeCompare(name) == 0) {
                 validTextures.push(this.textures[index]);
             }
         }
@@ -41,11 +42,11 @@ class Model {
         return this.parts;
     }
 
-    findPart() {
-        var found = null;
+    findPartsWithTexture(name) {
+        var found = [];
         this.parts.forEach((part) => {
-            if (part.name.localeCompare(part.name) == 0) {
-                found = part;
+            if (name.localeCompare(part.material.name) == 0) {
+                found = found.concat(part);
             }
         });
 

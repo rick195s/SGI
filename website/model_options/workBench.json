@@ -1,27 +1,30 @@
-
 {
-    "parts":{
+    "parts": {
         "door": {
-            "colors":
-            [
+            "colors": [
                 { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
-                { "name": "verxsasde", "hex": "0x00ff00","price": 200 },
-                { "name": "Castanho claro", "hex": "0xff8844","price": 300 }
+                { "name": "verxsasde", "hex": "0x00ff00", "price": 200 },
+                { "name": "Castanho claro", "hex": "0xff8844", "price": 300 }
             ]
         },
         "workBench": {
-            "colors":
-            [
+            "colors": [
                 { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
-                { "name": "verde", "hex": "0x00ff00","price": 200 },
-                { "name": "azul", "hex": "0x0000ff","price": 300 }
+                { "name": "verde", "hex": "0x00ff00", "price": 200 },
+                { "name": "azul", "hex": "0x0000ff", "price": 300 }
+            ]
+        },
+        "benchExtend_1": {
+            "colors": [
+                { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
+                { "name": "verde", "hex": "0x00ff00", "price": 200 },
+                { "name": "azul", "hex": "0x0000ff", "price": 300 }
             ]
         }
     },
 
-    "textures":
-        [    
-            { "name":"madeira clara", "path": "Wood1_2k_Color.jpg", "price": 200, "material":"WoodM" },
-            { "name":"madeira escura", "path": "Wood051_1K_Color.png", "price": 200, "material":"WoodM" }
-        ]
+    "textures": [
+        { "name": "madeira clara", "path": "Wood1_2k_Color.jpg", "price": 200, "materialName": "WoodM" },
+        { "name": "madeira escura", "path": "Wood051_1K_Color.png", "price": 200, "materialName": "WoodM" }
+    ]
 }
