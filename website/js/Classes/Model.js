@@ -1,16 +1,27 @@
 class Model {
-    constructor() {
+    constructor(price, { animations: animations }) {
+        this.price = price < 0 ? 0 : price;
         this.parts = [];
         this.textures = [];
         this.animations = [];
+        //this.selectedTextureIndex = -1;
+
+        this.addAnimations(animations);
+        this.addTextures(getTexturesFromJson());
     }
 
     getPrice() {
-        var totalPrice = 0;
+        var totalPrice = this.price;
         this.parts.forEach((part) => {
             totalPrice += part.userData.part.getIncreasePrice();
         });
 
+        // If a material was selected its price will be counted
+        //if (this.selectedTextureIndex >= 0) totalPrice += this.textures[this.selectedTextureIndex].price;
+
+        if (totalPrice < 0) {
+            alert("Price Invalid");
+        }
         return totalPrice;
     }
 
@@ -35,6 +46,15 @@ class Model {
     }
 
     addPart(part) {
+        // part.castShadow = true;
+        // part.receiveShadow = true;
+        // Cloning the material because exist objects sharing the same material
+        part.material = part.material.clone();
+        // Storing a back-up material
+        part.userData.oldMaterial = part.material.clone();
+        part.userData.part = new Part();
+        part.userData.part.addDefaultColor(part.material.color);
+        part.userData.part.addColors(getColorsFromJson(part.name));
         this.parts.push(part);
     }
 

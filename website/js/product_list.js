@@ -48,16 +48,4 @@ function update_catalog(products) {
     }
 
     document.getElementById("catalog").innerHTML = html;
-
-    // // Find all color elements of the right side tab
-    // var elements = document.getElementsByClassName("item_color_card");
-
-    // // Add events that will be activated by the user interactions
-    // for (let i = 0; i < elements.length; i++) {
-    //     // Not using addEventListener because each element just need one
-    //     // action for each event
-    //     elements[i].onclick = () => change_item_color(i, true);
-    //     elements[i].onmouseover = () => change_item_color(i, false);
-    //     elements[i].onmouseout = () => reset_item_color();
-    // }
 }

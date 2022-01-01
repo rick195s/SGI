@@ -26,5 +26,10 @@
     "textures": [
         { "name": "madeira clara", "path": "Wood1_2k_Color.jpg", "price": 200, "materialName": "WoodM" },
         { "name": "madeira escura", "path": "Wood051_1K_Color.png", "price": 200, "materialName": "WoodM" }
+    ],
+
+    "animations": [
+        { "name": "", "path": "Wood051_1K_Color.png" },
+        { "name": "", "path": "Wood051_1K_Color.png" }
     ]
 }
