@@ -3,53 +3,25 @@ function onHover(evento, mouse, raycaster) {
     mouse.x = (evento.clientX / myCanvas.width) * 2 - 1;
     mouse.y = -(evento.clientY / myCanvas.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
-
     var intersected = raycaster.intersectObjects(model.getParts());
     if (intersected.length > 0) {
+        // reset item color of previous hovered item
         if (inter && inter != intersected[0]) {
-            inter.object.material = inter.object.userData.oldMaterial;
+            reset_item_material(inter.object);
         }
 
         inter = intersected[0];
-        // Cloning the material because exist objects sharing the same material
-        inter.object.material = intersected[0].object.material.clone();
-
-        inter.object.userData.oldMaterial = inter.object.material.clone();
-
         // Giving user the prespective of something happening
         inter.object.material.color.set(0xff0000);
     } else if (inter) {
-        inter.object.material = inter.object.userData.oldMaterial;
+        reset_item_material(inter.object);
         inter = null;
     }
 }
-// function onHover(evento, mouse, raycaster) {
-//     // Updating the mouse position
-//     mouse.x = (evento.clientX / myCanvas.width) * 2 - 1;
-//     mouse.y = -(evento.clientY / myCanvas.height) * 2 + 1;
-//     raycaster.setFromCamera(mouse, camera);
-
-//     var intersected = raycaster.intersectObjects(model.getParts());
-//     if (intersected.length > 0) {
-//         if (inter && inter != intersected[0]) {
-//             inter.object.material.color = inter.object.userData.oldColor;
-//         }
-
-//         inter = intersected[0];
-//         inter.object.userData.oldColor = inter.object.material.color.clone();
-
-//         // Giving user the prespective of something happening
-//         inter.object.material.color.set(0xff0000);
-//     } else if (inter) {
-//         inter.object.material.color = inter.object.userData.oldColor;
-//         inter = null;
-//     }
-// }
 
 function onClick() {
     if (inter) {
         clickedObject = inter;
-        console.log(clickedObject.object.material.name);
         change_html(clickedObject.object);
     }
 }
@@ -63,21 +35,58 @@ function change_item_color(value, save) {
 
     // Change the object color permanently
     if (save) {
-        clickedObject.object.userData.oldMaterial = clickedObject.object.material;
+        clickedObject.object.userData.oldMaterial.copy(clickedObject.object.material);
         clickedObject.object.material.color.copy(clickedObject.object.userData.part.changeColor(value));
         update_price();
     }
 }
 
-function reset_item_color() {
-    // Reset the object material
-    clickedObject.object.material.copy(clickedObject.object.userData.oldMaterial);
+// The ImageBitmap needs to be loaded and then after
+// the change_item_texture will be called
+function start_change_item_texture(value, save) {
+    // instantiate a loader
+    var loader = new THREE.ImageBitmapLoader();
+
+    // load a image resource
+    loader.load(
+        // resource URL
+        "3D Model/materials/" + model.textures[value].path,
+
+        // onLoad callback
+        (imageBitmap) => {
+            var texture = new THREE.CanvasTexture(imageBitmap);
+            change_item_texture(texture, save);
+        }
+    );
 }
 
-function change_item_texture(value, save) {
-    var texture = new THREE.TextureLoader().load("3D Model/materials/" + model.textures[value].path);
-    clickedObject.object.material.map = texture;
-    clickedObject.object.material.needsUpdate = true;
+function change_item_texture(texture, save) {
+    var partsWithSameTexture = model.findPartsWithTexture(clickedObject.object.material.name);
+
+    partsWithSameTexture.forEach((element) => {
+        element.userData.oldMaterial = element.material.clone();
+        element.material.map = texture;
+    });
+
+    if (save) {
+        partsWithSameTexture.forEach((element) => {
+            element.userData.oldMaterial.copy(element.material);
+        });
+    }
+}
+
+function reset_item_material(object) {
+    var partsWithSameTexture;
+    // Reset the object material
+    if (object) {
+        partsWithSameTexture = model.findPartsWithTexture(object.material.name);
+    } else {
+        partsWithSameTexture = model.findPartsWithTexture(clickedObject.object.material.name);
+    }
+
+    partsWithSameTexture.forEach((element) => {
+        element.material.copy(element.userData.oldMaterial);
+    });
 }
 
 function start_animation(name) {
@@ -85,8 +94,8 @@ function start_animation(name) {
     var action = mixer.clipAction(clipe);
 
     if (action.paused) {
-        // two animations because the object was animated previously
-        // and we just want the LoopPingPong to execute one time (backwards)
+        // the loop was set to LoopPingPong to execute one time
+        // because we want it to animate backwards
         action.setLoop(THREE.LoopPingPong, 2);
         action.paused = false;
         action.clampWhenFinished = false;

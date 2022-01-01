@@ -1,15 +1,11 @@
-var renderer, camera, scene, directLight;
+var renderer, camera, scene, directLight, model, relogio, mixer;
 var inter, clickedObject;
-var model = new Model();
 
 init();
-
-var relogio = new THREE.Clock();
-var mixer = new THREE.AnimationMixer(scene);
-
 renderizar();
 
 function init() {
+    model = new Model();
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
     var width = document.getElementById("canvasDiv").offsetWidth;
@@ -34,6 +30,9 @@ function init() {
 
     load_gltf_to(scene, "3D Model/workBenchM_animation.gltf", model);
     add_light_to(scene);
+
+    relogio = new THREE.Clock();
+    mixer = new THREE.AnimationMixer(scene);
 
     // Resize canvas when page is resized
     window.addEventListener(
@@ -67,7 +66,7 @@ function renderizar() {
 function change_html(object) {
     document.getElementById("obejctName").innerHTML = object.name;
     update_item_colors(object.userData.part.getColors());
-    update_item_textures(model.getTexture(object.material.name));
+    update_item_textures(model.getTextures(object.material.name));
 }
 
 function update_item_textures(textures) {
@@ -79,7 +78,9 @@ function update_item_textures(textures) {
             html +=
                 '<div class="col-lg-4">' +
                 '<div  class="item_texture_card">' +
-                '<span  class="bg-dark rounded-circle" style="height: 75px; width: 75px"></span>' +
+                '<img  src="3D Model/materials/' +
+                textures[i].path +
+                '" class="bg-dark rounded-circle" style="height: 75px; width: 75px">' +
                 "<p>" +
                 textures[i].name +
                 "</p>" +
@@ -99,16 +100,16 @@ function update_item_textures(textures) {
     for (let i = 0; i < elements.length; i++) {
         // Not using addEventListener because each element just need one
         // action for each event
-        elements[i].onclick = () => change_item_texture(i, true);
-        //elements[i].onmouseover = () => change_item_texture(i, false);
-        //elements[i].onmouseout = () => reset_item_color();
+        elements[i].onclick = () => start_change_item_texture(i, true);
+        elements[i].onmouseenter = () => start_change_item_texture(i, false);
+        elements[i].onmouseleave = () => reset_item_material();
     }
 }
 
 function update_item_colors(colors) {
-    html = "";
-
+    set_loader("item_colors");
     var images = render_images(colors);
+    var html = "";
 
     // Updating the html of the colors tab
     if (colors.length > 0) {
@@ -139,13 +140,13 @@ function update_item_colors(colors) {
         // Not using addEventListener because each element just need one
         // action for each event
         elements[i].onclick = () => change_item_color(i, true);
-        elements[i].onmouseover = () => change_item_color(i, false);
-        elements[i].onmouseout = () => reset_item_color();
+        elements[i].onmouseenter = () => change_item_color(i, false);
+        elements[i].onmouseleave = () => reset_item_material();
     }
 }
 
 function show_animations() {
-    html = "";
+    var html = "";
 
     // Updating the html of the colors tab
     if (model.animations.length > 0) {
@@ -178,7 +179,24 @@ function update_price() {
     document.getElementById("price").innerHTML = model.getPrice() + "€";
 }
 
+// Taking screenshot of item with different colors or textures
 function render_images(colors) {
+    var screen_camera = set_render_image_camera();
+    var images = [];
+    for (let i = 0; i < colors.length; i++) {
+        var img = new Image();
+        clickedObject.object.material.color.copy(colors[i]);
+        renderer.render(scene, screen_camera);
+        img.src = renderer.domElement.toDataURL();
+        images = images.concat(img);
+    }
+    reset_item_material();
+    return images;
+}
+
+// Placing a new camera on a new position to take a screenshot
+// of each color or texture of the item
+function set_render_image_camera() {
     var screen_camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     screen_camera.position.copy(clickedObject.object.position);
     screen_camera.position.y *= 2;
@@ -188,26 +206,12 @@ function render_images(colors) {
     var width = document.getElementById("canvasDiv").offsetWidth;
 
     update_window(renderer, screen_camera, width, window.innerHeight);
-    var images = [];
-    for (let i = 0; i < colors.length; i++) {
-        var img = new Image();
-        clickedObject.object.material.color.copy(colors[i]);
-        renderer.render(scene, screen_camera);
-        img.src = renderer.domElement.toDataURL();
-        images = images.concat(img);
-    }
-    reset_item_color();
-    return images;
-    // renderer.render(scene, screen_camera);
-    // renderer.domElement.toBlob(
-    //     function (blob) {
-    //         var a = document.createElement("a");
-    //         var url = URL.createObjectURL(blob);
-    //         a.href = url;
-    //         a.download = "canvas.png";
-    //         a.click();
-    //     },
-    //     "image/png",
-    //     1.0
-    // );
+
+    return screen_camera;
+}
+
+function set_loader(htmlElementId) {
+    var html = '<div class="col-12 d-flex justify-content-center">' + '<div class="loader"></div>' + "</div>";
+
+    document.getElementById(htmlElementId).innerHTML = html;
 }
