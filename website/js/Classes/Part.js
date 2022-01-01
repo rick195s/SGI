@@ -1,8 +1,6 @@
 class Part {
-    constructor(price) {
-        this.price = price;
+    constructor() {
         this.selectedColorIndex = -1;
-        this.selectedMaterialIndex = -1;
         this.colors = [];
     }
 
@@ -12,10 +10,7 @@ class Part {
         // If a color was selected its price will be counted
         if (this.selectedColorIndex >= 0) increasePrice += this.colors[this.selectedColorIndex].increasePrice;
 
-        // If a material was selected its price will be counted
-        if (this.selectedMaterialIndex >= 0) increasePrice += this.materials[this.selectedMaterialIndex].increasePrice;
-
-        return this.price + increasePrice;
+        return increasePrice;
     }
 
     getSelectedColor() {

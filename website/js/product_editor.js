@@ -1,57 +1,41 @@
+// File with principal code for the edit_product page that changes html
+
 var renderer, camera, scene, directLight, model, relogio, mixer;
 var inter, clickedObject;
 
 init();
-renderizar();
 
 function init() {
-    model = new Model();
-    var raycaster = new THREE.Raycaster();
-    var mouse = new THREE.Vector2();
-    var width = document.getElementById("canvasDiv").offsetWidth;
+    set_loader("canvasDiv");
 
-    //------------------------------------------------ CRIAR scene ---------------------------------------------------
+    var loader = new THREE.GLTFLoader();
+    var path; //= "3D Model/workBenchM_animation.gltf";
+
+    let params = new URL(document.location).searchParams;
+    path = params.get("model");
+
+    // creating scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
 
-    var canvas = document.getElementById("myCanvas");
-    renderer = create_render(canvas);
-    renderer.toneMapping = THREE.ReinhardToneMapping;
-    renderer.toneMappingExposure = 1.8;
-
-    //------------------------------------------------ CRIAR OBJETO PARA RENDER  ---------------------------------------------------
-    camera = create_perspective_camera(window.innerWidth / window.innerHeight);
-    scene.add(camera);
-
-    //------------------------------------------------ ADICIONAR CONTROLOS DE sceneRIO ---------------------------------------------------
-    new THREE.OrbitControls(camera, renderer.domElement);
-
-    update_window(renderer, camera, width, window.innerHeight);
-
-    load_gltf_to(scene, "3D Model/workBenchM_animation.gltf", model);
-    add_light_to(scene);
-
-    relogio = new THREE.Clock();
-    mixer = new THREE.AnimationMixer(scene);
-
-    // Resize canvas when page is resized
-    window.addEventListener(
-        "resize",
-        () => {
-            width = document.getElementById("canvasDiv").offsetWidth;
-            update_window(renderer, camera, width, window.innerHeight);
-        },
-        false
-    );
-
-    // Show what object is being hovered
-    canvas.addEventListener("mousemove", (evento) => onHover(evento, mouse, raycaster));
-
-    // Selects the hovered object
-    canvas.addEventListener("click", () => onClick(raycaster));
+    loader.load(path, function (gltf) {
+        model = new Model(600, { animations: gltf.animations });
+        gltf.scene.traverse((node) => {
+            if (node instanceof THREE.Light) node.visible = false;
+            if (node instanceof THREE.Mesh) {
+                model.addPart(node);
+            }
+            update_price();
+        });
+        set_canvas();
+        gltf.material = new THREE.MeshStandardMaterial();
+        scene.add(gltf.scene);
+        set_scene();
+        renderizar();
+    });
 }
 
-//------------------------------------------------ RENDERIZAR O sceneRIO ---------------------------------------------------
+// Render scenario
 function renderizar() {
     // caso exista algum objeto a ser animado no js podemos usar
     requestAnimationFrame(renderizar);
@@ -61,14 +45,14 @@ function renderizar() {
     renderer.render(scene, camera);
 }
 
-//------------------------------------------------ HOVER COM O mouse ---------------------------------------------------
-
+// Called when user clickes an item
 function change_html(object) {
     document.getElementById("obejctName").innerHTML = object.name;
     update_item_colors(object.userData.part.getColors());
     update_item_textures(model.getTextures(object.material.name));
 }
 
+// Change the textures html from the right tab
 function update_item_textures(textures) {
     html = "";
 
@@ -106,6 +90,7 @@ function update_item_textures(textures) {
     }
 }
 
+// Change the colors html from the right tab
 function update_item_colors(colors) {
     set_loader("item_colors");
     var images = render_images(colors);
@@ -145,10 +130,10 @@ function update_item_colors(colors) {
     }
 }
 
+// Showing animations inside the canvas
 function show_animations() {
     var html = "";
 
-    // Updating the html of the colors tab
     if (model.animations.length > 0) {
         for (let i = 0; i < model.animations.length; i++) {
             html +=
@@ -169,12 +154,11 @@ function show_animations() {
 
     // Add events that will be activated by the user interactions
     for (let i = 0; i < elements.length; i++) {
-        // Not using addEventListener because each element just need one
-        // action for each event
         elements[i].onclick = () => start_animation(model.animations[i].name);
     }
 }
 
+// Update price when user changes item color or texture
 function update_price() {
     document.getElementById("price").innerHTML = model.getPrice() + "€";
 }
@@ -210,8 +194,12 @@ function set_render_image_camera() {
     return screen_camera;
 }
 
+// Loader to show the system status to user
 function set_loader(htmlElementId) {
-    var html = '<div class="col-12 d-flex justify-content-center">' + '<div class="loader"></div>' + "</div>";
+    var html =
+        '<div class="col-12 d-grid text-center justify-content-center">' +
+        '<div class="loader"></div><h5 class="pt-3">Loading...</h5>' +
+        "</div>";
 
     document.getElementById(htmlElementId).innerHTML = html;
 }

@@ -1,3 +1,39 @@
+function set_scene() {
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+    var width = document.getElementById("canvasDiv").offsetWidth;
+    var canvas = document.getElementById("myCanvas");
+    renderer = create_render(canvas);
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 1.8;
+
+    camera = create_perspective_camera(window.innerWidth / window.innerHeight);
+    scene.add(camera);
+
+    // user controls to the scene
+    new THREE.OrbitControls(camera, renderer.domElement);
+    update_window(renderer, camera, width, window.innerHeight);
+    add_light_to(scene);
+
+    relogio = new THREE.Clock();
+    mixer = new THREE.AnimationMixer(scene);
+
+    // Resize canvas when page is resized
+    window.addEventListener(
+        "resize",
+        () => {
+            width = document.getElementById("canvasDiv").offsetWidth;
+            update_window(renderer, camera, width, window.innerHeight);
+        },
+        false
+    );
+
+    // Show what object is being hovered
+    canvas.addEventListener("mousemove", (evento) => onHover(evento, mouse, raycaster));
+
+    // Selects the hovered object
+    canvas.addEventListener("click", () => onClick(raycaster));
+}
 //------------------------------------------------ CRIAR OBJETO PARA RENDER  ---------------------------------------------------
 
 function create_render(to_canvas) {
@@ -11,83 +47,32 @@ function create_render(to_canvas) {
 function create_perspective_camera(aspect) {
     var camera = new THREE.PerspectiveCamera(60, aspect, 1, 500);
     camera.position.x = 0;
-    camera.position.y = 10;
+    camera.position.y = 15;
     camera.position.z = 15;
-    camera.lookAt(0, 2.5, 0);
+    //camera.lookAt(0, 2.5, 0);
 
     return camera;
 }
 
-//------------------------------------------------ CARREGAR FICHEIRO BLENDER ---------------------------------------------------
-function load_gltf_to(cena, path, model) {
-    var carregador = new THREE.GLTFLoader();
+// Replacing the loader inside canvasDiv with this html
+function set_canvas() {
+    var html =
+        '<canvas id="myCanvas"></canvas>' +
+        '<div id="animationsOutDiv" class="d-flex align-items-center">' +
+        "<h6>Animações</h6>" +
+        '<div style="display: flex; flex-direction: row" id="animationsInDiv">' +
+        "<span>Objeto sem animações</span>" +
+        "</div>" +
+        "</div>";
 
-    carregador.load(path, function (gltf) {
-        gltf.scene.traverse((node) => {
-            if (node instanceof THREE.Light) node.visible = false;
-            if (node instanceof THREE.Mesh) {
-                // node.castShadow = true;
-                // node.receiveShadow = true;
-                // Cloning the material because exist objects sharing the same material
-                node.material = node.material.clone();
-                // Storing a back-up material
-                node.userData.oldMaterial = node.material.clone();
-                node.userData.part = new Part(100);
-                node.userData.part.addDefaultColor(node.material.color);
-                node.userData.part.addColors(getColorsFromJson(node.name));
-                model.addPart(node);
-            }
-
-            update_price();
-        });
-
-        // gltf.parser.getDependencies("material").then((materials) => {
-        //     console.log(materials);
-        // });
-        model.addTextures(getTexturesFromJson());
-        model.addAnimations(gltf.animations);
-        show_animations();
-        gltf.material = new THREE.MeshStandardMaterial();
-        cena.add(gltf.scene);
-    });
+    document.getElementById("canvasDiv").innerHTML = html;
+    show_animations();
 }
 
 function update_window(renderer, camara, width, height) {
     renderer.setSize(width, height);
     camara.aspect = width / height;
     camara.updateProjectionMatrix();
-}
-
-async function getColorsFromJson(name) {
-    return await fetch("model_options/workBench.json")
-        .then((response) => response.json())
-        .then((data) => {
-            var colors = [];
-            if (data.parts[name]) {
-                for (var i = 0; i < data.parts[name].colors.length; i++) {
-                    var color = new Color();
-                    color.increasePrice = data.parts[name].colors[i].price;
-                    color.name = data.parts[name].colors[i].name;
-                    color.setHex(data.parts[name].colors[i].hex);
-                    colors.push(color);
-                }
-            }
-            return colors;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}
-
-async function getTexturesFromJson() {
-    return await fetch("model_options/workBench.json")
-        .then((response) => response.json())
-        .then((data) => {
-            return data.textures;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
 }
 
 function add_light_to(scene) {

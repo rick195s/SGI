@@ -20,15 +20,7 @@
             <img src="./img/logo.png" id="logo" alt="laredoute_logo" />
 
             <div class="row">
-                <div class="col-8" id="canvasDiv" style="padding-left: 0">
-                    <canvas id="myCanvas"></canvas>
-                    <div id="animationsOutDiv" class="d-flex align-items-center">
-                        <h6>Animações</h6>
-                        <div style="display: flex; flex-direction: row" id="animationsInDiv">
-                            <span>Objeto sem animações</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="col-8 d-flex align-items-center" id="canvasDiv" style="padding-left: 0"></div>
                 <div class="col-4 shadow overflow-auto" id="option_tab">
                     <div class="row mb-3">
                         <h3 class="mt-5">Escolha uma cor</h3>
@@ -62,12 +54,12 @@
         <script src="./node_modules/three/examples/js/controls/OrbitControls.js"></script>
         <script src="./node_modules/three/examples/js/libs/stats.min.js"></script>
         <script src="./node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+        <script src="./js/json_loaders.js"></script>
         <script src="./js/Classes/Color.js"></script>
-        <script src="./js/Classes/Material.js"></script>
         <script src="./js/Classes/Part.js"></script>
         <script src="./js/Classes/Model.js"></script>
         <script src="./js/scene.js"></script>
-        <script src="./js/editor_actions.js"></script>
+        <script src="./js/user_actions.js"></script>
         <script src="./js/product_editor.js"></script>
     </body>
 </html>
