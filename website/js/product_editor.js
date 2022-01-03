@@ -9,10 +9,9 @@ function init() {
     set_loader("canvasDiv");
 
     var loader = new THREE.GLTFLoader();
-    var path; //= "3D Model/workBenchM_animation.gltf";
 
     let params = new URL(document.location).searchParams;
-    path = params.get("model");
+    var path = params.get("model") == null ? "3D Model/workBenchM_animation.gltf" : params.get("model");
 
     // creating scene
     scene = new THREE.Scene();
@@ -183,8 +182,9 @@ function render_images(colors) {
 function set_render_image_camera() {
     var screen_camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     screen_camera.position.copy(clickedObject.object.position);
-    screen_camera.position.y *= 2;
-    screen_camera.position.z *= 2;
+    screen_camera.position.y += 4;
+    screen_camera.position.z += 4;
+
     screen_camera.lookAt(clickedObject.object.position);
 
     var width = document.getElementById("canvasDiv").offsetWidth;
