@@ -10,6 +10,10 @@ function set_scene() {
     camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     scene.add(camera);
 
+    // const plane = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0xffffff }));
+    // plane.rotation.x = -Math.PI / 2;
+    // plane.receiveShadow = true;
+    // scene.add(plane);
     // user controls to the scene
     new THREE.OrbitControls(camera, renderer.domElement);
     update_window(renderer, camera, width, window.innerHeight);
@@ -34,8 +38,8 @@ function set_scene() {
     // Selects the hovered object
     canvas.addEventListener("click", () => onClick(raycaster));
 }
-//------------------------------------------------ CRIAR OBJETO PARA RENDER  ---------------------------------------------------
 
+// Create render
 function create_render(to_canvas) {
     var renderer = new THREE.WebGL1Renderer({ canvas: to_canvas, alpha: true });
     renderer.shadowMap.enabled = true;
@@ -43,7 +47,7 @@ function create_render(to_canvas) {
     return renderer;
 }
 
-//------------------------------------------------ ADICIONAR CAMARA ---------------------------------------------------
+// Create camera
 function create_perspective_camera(aspect) {
     var camera = new THREE.PerspectiveCamera(60, aspect, 1, 500);
     camera.position.x = 0;
@@ -66,7 +70,7 @@ function set_canvas() {
         "</div>";
 
     document.getElementById("canvasDiv").innerHTML = html;
-    show_animations();
+    show_animations(getAnimationImagesFromJson());
 }
 
 function update_window(renderer, camara, width, height) {
@@ -76,15 +80,19 @@ function update_window(renderer, camara, width, height) {
 }
 
 function add_light_to(scene) {
-    //------------------------------------------------ ADICIONAR LUZ AMBIENTE AO sceneRIO ---------------------------------------------------
+    // Ambient Light
     var luzPoint = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(luzPoint);
 
     // Sun Light
-    directLight = new THREE.DirectionalLight(0xffa95c, 4);
-    // directLight.castShadow = true;
-    // directLight.shadow.bias = -0.0001;
-    // directLight.shadow.mapSize.width = 1024 * 4;
-    // directLight.shadow.mapSize.heigh = 1024 * 4;
+    directLight = new THREE.DirectionalLight(0xffa95c, 1.5);
+    directLight.castShadow = true;
+    directLight.shadow.bias = -0.0001;
+    directLight.shadow.mapSize.width = 1024 * 4;
+    directLight.shadow.mapSize.heigh = 1024 * 4;
+    directLight.name = "directLight";
     scene.add(directLight);
+
+    hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.5);
+    scene.add(hemisphereLight);
 }

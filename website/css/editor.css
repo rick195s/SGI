@@ -11,6 +11,14 @@ body {
     font-family: "Source Sans Pro", Arial, sans-serif;
 }
 
+.col-8 {
+    width: 70% !important;
+}
+
+.col-4 {
+    width: 30% !important;
+}
+
 #myCanvas {
     position: fixed;
     width: 100%;
@@ -36,7 +44,7 @@ body {
     right: 0;
 }
 
-#item_materials {
+#item_textures {
     margin-bottom: 100px;
 }
 

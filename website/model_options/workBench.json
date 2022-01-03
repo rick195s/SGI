@@ -30,8 +30,9 @@
         { "name": "Cedro", "path": "Wood051_1K_Color.png", "price": 200, "materialName": "WoodM" }
     ],
 
-    "animations": [
-        { "name": "", "path": "Wood051_1K_Color.png" },
-        { "name": "", "path": "Wood051_1K_Color.png" }
-    ]
+    "animations": {
+        "bench&legExtension": { "image": "img/animations/workBench_legExtend.png" },
+        "doorOpenAnimation": { "image": "img/animations/workBench_door.png" },
+        "door1OpenAnimation": { "image": "img/animations/workBench_door.png" }
+    }
 }

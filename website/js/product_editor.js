@@ -92,69 +92,77 @@ function update_item_textures(textures) {
 // Change the colors html from the right tab
 function update_item_colors(colors) {
     set_loader("item_colors");
-    var images = render_images(colors);
-    var html = "";
+    render_images(colors).then((images) => {
+        var html = "";
 
-    // Updating the html of the colors tab
-    if (colors.length > 0) {
-        for (let i = 0; i < colors.length; i++) {
-            html +=
-                '<div class="col-lg-4">' +
-                '<div  class="item_color_card">' +
-                '<img  src="' +
-                images[i].src +
-                '" class="bg-dark rounded-circle" style="height: 75px; width: 75px">' +
-                "<p>" +
-                colors[i].name +
-                "</p>" +
-                "</div>" +
-                "</div>";
+        // Updating the html of the colors tab
+        if (colors.length > 0) {
+            for (let i = 0; i < colors.length; i++) {
+                html +=
+                    '<div class="col-lg-4">' +
+                    '<div  class="item_color_card">' +
+                    //'<span class="rounded-circle" style="height: 75px; width: 75px; background-color: #' +
+                    //colors[i].getHexString() +
+                    //'"></span>' +
+                    '<img  src="' +
+                    images[i].src +
+                    '" class="bg-dark rounded-circle" style="height: 75px; width: 75px">' +
+                    "<p>" +
+                    colors[i].name +
+                    "</p>" +
+                    "</div>" +
+                    "</div>";
+            }
+        } else {
+            html = '<div class="col-12"><div class="item_color_card"><h4>Sem Cores</h4></div></div>';
         }
-    } else {
-        html = '<div class="col-12"><div class="item_color_card"><h4>Sem Cores</h4></div></div>';
-    }
 
-    document.getElementById("item_colors").innerHTML = html;
+        document.getElementById("item_colors").innerHTML = html;
 
-    // Find all color elements of the right side tab
-    var elements = document.getElementsByClassName("item_color_card");
+        // Find all color elements of the right side tab
+        var elements = document.getElementsByClassName("item_color_card");
 
-    // Add events that will be activated by the user interactions
-    for (let i = 0; i < elements.length; i++) {
-        // Not using addEventListener because each element just need one
-        // action for each event
-        elements[i].onclick = () => change_item_color(i, true);
-        elements[i].onmouseenter = () => change_item_color(i, false);
-        elements[i].onmouseleave = () => reset_item_material();
-    }
+        // Add events that will be activated by the user interactions
+        for (let i = 0; i < elements.length; i++) {
+            // Not using addEventListener because each element just need one
+            // action for each event
+            elements[i].onclick = () => change_item_color(i, true);
+            elements[i].onmouseenter = () => change_item_color(i, false);
+            elements[i].onmouseleave = () => reset_item_material();
+        }
+    });
 }
 
 // Showing animations inside the canvas
-function show_animations() {
+function show_animations(animationsData) {
     var html = "";
 
-    if (model.animations.length > 0) {
-        for (let i = 0; i < model.animations.length; i++) {
-            html +=
-                '<span class="rounded-circle animationBtn">' +
-                "<img " +
-                'src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/How_to_use_icon.svg/1200px-How_to_use_icon.svg.png"' +
-                'alt=""' +
-                "/>" +
-                "</span>";
+    animationsData.then((data) => {
+        if (model.animations.length > 0) {
+            for (let i = 0; i < model.animations.length; i++) {
+                html +=
+                    '<span class="rounded-circle animationBtn">' +
+                    "<img " +
+                    'src="' +
+                    data[model.animations[i].name].image +
+                    '"' +
+                    'alt=""' +
+                    "/>" +
+                    "</span>";
+            }
+        } else {
+            html = "<span>Objeto sem animações</span>";
         }
-    } else {
-        html = "<span>Objeto sem animações</span>";
-    }
 
-    document.getElementById("animationsInDiv").innerHTML = html;
+        document.getElementById("animationsInDiv").innerHTML = html;
 
-    var elements = document.getElementsByClassName("animationBtn");
+        var elements = document.getElementsByClassName("animationBtn");
 
-    // Add events that will be activated by the user interactions
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].onclick = () => start_animation(model.animations[i].name);
-    }
+        // Add events that will be activated by the user interactions
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].onclick = () => start_animation(model.animations[i].name);
+        }
+    });
 }
 
 // Update price when user changes item color or texture
@@ -163,7 +171,7 @@ function update_price() {
 }
 
 // Taking screenshot of item with different colors or textures
-function render_images(colors) {
+async function render_images(colors) {
     var screen_camera = set_render_image_camera();
     var images = [];
     for (let i = 0; i < colors.length; i++) {
