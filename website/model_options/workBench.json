@@ -9,14 +9,16 @@
         },
         "workBench": {
             "colors": [
-                { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
-                { "name": "verde", "hex": "0x00ff00", "price": 200 },
-                { "name": "azul", "hex": "0x0000ff", "price": 300 }
+                { "name": "Castanho Quase Escuro", "hex": "0x553311", "price": 100 },
+                { "name": "Castanho Opaco", "hex": "0x664433", "price": 200 },
+                { "name": "Castanho Escuro", "hex": "0x332211", "price": 300 },
+                { "name": "Castanho Claro", "hex": "0x996633", "price": 300 },
+                { "name": "Creme", "hex": "0xccaa66", "price": 300 }
             ]
         },
         "benchExtend_1": {
             "colors": [
-                { "name": "Vermelho", "hex": "0xff0000", "price": 100 },
+                { "name": "Vermelho", "hex": "0x553311", "price": 100 },
                 { "name": "verde", "hex": "0x00ff00", "price": 200 },
                 { "name": "azul", "hex": "0x0000ff", "price": 300 }
             ]
@@ -24,8 +26,8 @@
     },
 
     "textures": [
-        { "name": "madeira clara", "path": "Wood1_2k_Color.jpg", "price": 200, "materialName": "WoodM" },
-        { "name": "madeira escura", "path": "Wood051_1K_Color.png", "price": 200, "materialName": "WoodM" }
+        { "name": "Carvalho", "path": "Wood1_2k_Color.jpg", "price": 200, "materialName": "WoodM" },
+        { "name": "Cedro", "path": "Wood051_1K_Color.png", "price": 200, "materialName": "WoodM" }
     ],
 
     "animations": [
