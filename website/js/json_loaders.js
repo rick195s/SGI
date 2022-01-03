@@ -29,3 +29,14 @@ async function getTexturesFromJson() {
             console.error(error);
         });
 }
+
+async function getAnimationImagesFromJson() {
+    return await fetch("model_options/workBench.json")
+        .then((response) => response.json())
+        .then((data) => {
+            return data.animations;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}

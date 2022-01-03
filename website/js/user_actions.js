@@ -12,7 +12,7 @@ function onHover(evento, mouse, raycaster) {
 
         inter = intersected[0];
         // Giving user the prespective of something happening
-        inter.object.material.color.set(0xff0000);
+        inter.object.material.color.set(0xf47174);
     } else if (inter) {
         reset_item_material(inter.object);
         inter = null;
