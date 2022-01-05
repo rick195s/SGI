@@ -238,14 +238,19 @@ function scene_options() {
     var html =
         '<div id="sceneOptions" class="align-items-center">' +
         "<h6>Opções</h6>" +
-        '<div style="display: flex; flex-direction: row" id="scene_shadow">' +
+        '<div title="Ativar/Desativar Sombras" style="display: flex; flex-direction: row" id="scene_shadow">' +
         '<span class="rounded-circle sceneOptionBtn">' +
         '<img src="img/shadow_icon.png" alt="" />' +
         "</span>" +
         "</div>" +
-        '<div style="display: flex; flex-direction: row" id="scene_shut_light">' +
+        '<div title="Ligar/Desligar Luzes"  style="display: flex; flex-direction: row" id="scene_shut_light">' +
         '<span class="rounded-circle sceneOptionBtn">' +
         '<img src="img/night_day_icon.png" alt="" />' +
+        "</span>" +
+        "</div>" +
+        '<div title="Adicionar/Remover Plano"  style="display: flex; flex-direction: row" id="scene_remove_plane">' +
+        '<span class="rounded-circle sceneOptionBtn">' +
+        '<img src="img/remove_plane_icon.png" alt="" />' +
         "</span>" +
         "</div>" +
         "</div>";
@@ -253,6 +258,7 @@ function scene_options() {
     document.getElementById("canvasDiv").innerHTML += html;
     document.getElementById("scene_shadow").addEventListener("click", () => change_shadow_state());
     document.getElementById("scene_shut_light").addEventListener("click", () => change_light_state());
+    document.getElementById("scene_remove_plane").addEventListener("click", () => change_plane_state());
 }
 
 // changing the option tab html

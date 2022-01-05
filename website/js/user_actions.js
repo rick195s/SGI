@@ -131,3 +131,8 @@ function change_light_state() {
     light.intensity = light.status ? 1.5 : 0;
     light.status = !light.status;
 }
+
+// Show or Hide scene plane
+function change_plane_state() {
+    scene.getObjectByName("Plane").visible = !scene.getObjectByName("Plane").visible;
+}
