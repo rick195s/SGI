@@ -1,12 +1,3 @@
-::-webkit-scrollbar {
-    width: 7px;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #d0d0d0;
-}
-
 body {
     font-family: "Source Sans Pro", Arial, sans-serif;
 }
@@ -65,7 +56,8 @@ body {
 
 /* Style the counter cards */
 .item_color_card,
-.item_texture_card {
+.item_texture_card,
+#item_texture {
     padding: 10px;
     flex-direction: column;
     display: flex;
@@ -93,7 +85,8 @@ body {
     flex-direction: column;
 }
 
-.animationBtn {
+.animationBtn,
+.sceneOptionBtn {
     border: 1px solid #191919;
     background-color: #f3f3f3;
     margin: 5px;
@@ -101,14 +94,23 @@ body {
     width: 40px;
 }
 
-.animationBtn:hover {
+.animationBtn:hover,
+.sceneOptionBtn {
     cursor: pointer;
 }
 
-.animationBtn img {
+.animationBtn img,
+.sceneOptionBtn img {
     display: block;
     margin-left: auto;
     margin-right: auto;
     height: 30px;
     padding-top: 10px;
+}
+
+#sceneOptions {
+    position: fixed;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
 }

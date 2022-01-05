@@ -10,27 +10,46 @@ function init() {
 
     var loader = new THREE.GLTFLoader();
 
+    // Extracting GET params from URL
     let params = new URL(document.location).searchParams;
-    var path = params.get("model") == null ? "3D Model/workBenchM_animation.gltf" : params.get("model");
+    var name = params.get("model") == null ? "workBench" : params.get("model");
 
-    // creating scene
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    // Get all products from products.json
+    getProducts().then((products) => {
+        var path,
+            price = 0,
+            model_options_path;
 
-    loader.load(path, function (gltf) {
-        model = new Model(600, { animations: gltf.animations });
-        gltf.scene.traverse((node) => {
-            if (node instanceof THREE.Light) node.visible = false;
-            if (node instanceof THREE.Mesh) {
-                model.addPart(node);
+        // searching for the selected product
+        products.forEach((product) => {
+            if (product.name == name) {
+                path = product.model_3d;
+                price = product.basePrice;
+                model_options_path = product.model_options;
+                return;
             }
-            update_price();
         });
-        set_canvas();
-        gltf.material = new THREE.MeshStandardMaterial();
-        scene.add(gltf.scene);
-        set_scene();
-        renderizar();
+
+        // creating scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+
+        loader.load(path, function (gltf) {
+            // Creating model with all the custom fields
+            model = new Model(price, model_options_path, { animations: gltf.animations });
+            gltf.scene.traverse((node) => {
+                if (node instanceof THREE.Light) node.visible = false;
+                if (node instanceof THREE.Mesh) {
+                    model.addPart(node);
+                }
+            });
+
+            set_canvas();
+            gltf.material = new THREE.MeshStandardMaterial();
+            scene.add(gltf.scene);
+            set_scene();
+            renderizar();
+        });
     });
 }
 
@@ -46,9 +65,11 @@ function renderizar() {
 
 // Called when user clickes an item
 function change_html(object) {
+    set_option_tab();
     document.getElementById("obejctName").innerHTML = object.name;
     update_item_colors(object.userData.part.getColors());
     update_item_textures(model.getTextures(object.material.name));
+    update_price();
 }
 
 // Change the textures html from the right tab
@@ -71,7 +92,7 @@ function update_item_textures(textures) {
                 "</div>";
         }
     } else {
-        html = '<div class="col-12"><div class="item_texture_card"><h4>Sem Texturas</h4></div></div>';
+        html = '<div class="col-12"><div id="item_texture"><h4>Sem Texturas</h4></div></div>';
     }
 
     document.getElementById("item_textures").innerHTML = html;
@@ -210,4 +231,59 @@ function set_loader(htmlElementId) {
         "</div>";
 
     document.getElementById(htmlElementId).innerHTML = html;
+}
+
+// Adding the scene options to the left side
+function scene_options() {
+    var html =
+        '<div id="sceneOptions" class="align-items-center">' +
+        "<h6>Opções</h6>" +
+        '<div style="display: flex; flex-direction: row" id="scene_shadow">' +
+        '<span class="rounded-circle sceneOptionBtn">' +
+        '<img src="img/shadow_icon.png" alt="" />' +
+        "</span>" +
+        "</div>" +
+        '<div style="display: flex; flex-direction: row" id="scene_shut_light">' +
+        '<span class="rounded-circle sceneOptionBtn">' +
+        '<img src="img/night_day_icon.png" alt="" />' +
+        "</span>" +
+        "</div>" +
+        "</div>";
+
+    document.getElementById("canvasDiv").innerHTML += html;
+    document.getElementById("scene_shadow").addEventListener("click", () => change_shadow_state());
+    document.getElementById("scene_shut_light").addEventListener("click", () => change_light_state());
+}
+
+// changing the option tab html
+function set_option_tab() {
+    var html =
+        ' <div class="row mb-3">' +
+        '<h4 class="mt-5">Escolha uma cor</h4>' +
+        '<p id="obejctName">Selecione um Objecto</p>' +
+        "</div>" +
+        '<div class="row" id="item_colors">' +
+        '<div class="col-12">' +
+        '<div class="item_color_card">' +
+        "   <h5>Sem Cores</h5>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "<hr />" +
+        '<div class="row mb-3">' +
+        "<h4>Escolha uma Textura</h4>" +
+        "</div>" +
+        '<div class="row" id="item_textures">' +
+        '<div class="col-12">' +
+        '    <div class="item_texture_card">' +
+        "         <h5>Sem Texturas</h5>" +
+        "      </div>" +
+        "   </div>" +
+        "</div>" +
+        '<div class="row" id="priceDiv">' +
+        "<h6>JUNTAR AO CARRINHO:</h6>" +
+        '<p id="price"></p>' +
+        "</div>";
+
+    document.getElementById("option_tab").innerHTML = html;
 }

@@ -1,3 +1,4 @@
+// When user hovers canvas
 function onHover(evento, mouse, raycaster) {
     // Updating the mouse position
     mouse.x = (evento.clientX / myCanvas.width) * 2 - 1;
@@ -19,6 +20,7 @@ function onHover(evento, mouse, raycaster) {
     }
 }
 
+// When user clicks an item
 function onClick() {
     if (inter) {
         clickedObject = inter;
@@ -26,6 +28,7 @@ function onClick() {
     }
 }
 
+// Change item color
 function change_item_color(value, save) {
     // Save temporarily the material so then it's possible to reset it
     clickedObject.object.userData.oldMaterial = clickedObject.object.material.clone();
@@ -55,29 +58,35 @@ function start_change_item_texture(value, save) {
         // onLoad callback
         (imageBitmap) => {
             var texture = new THREE.CanvasTexture(imageBitmap);
+            // preventing bug from changing texture
+            texture.encoding = THREE.sRGBEncoding;
             change_item_texture(texture, save);
         }
     );
 }
 
+// Change item texture
 function change_item_texture(texture, save) {
     var partsWithSameTexture = model.findPartsWithTexture(clickedObject.object.material.name);
 
     partsWithSameTexture.forEach((element) => {
         element.userData.oldMaterial = element.material.clone();
+
         element.material.map = texture;
+        element.material.needsUpdate = true;
     });
 
     if (save) {
         partsWithSameTexture.forEach((element) => {
             element.userData.oldMaterial.copy(element.material);
         });
+        update_price();
     }
 }
 
+// Reset the object material
 function reset_item_material(object) {
     var partsWithSameTexture;
-    // Reset the object material
     if (object) {
         partsWithSameTexture = model.findPartsWithTexture(object.material.name);
     } else {
@@ -89,6 +98,7 @@ function reset_item_material(object) {
     });
 }
 
+// Start Model animations
 function start_animation(name) {
     var clipe = THREE.AnimationClip.findByName(model.animations, name);
     var action = mixer.clipAction(clipe);
@@ -108,4 +118,16 @@ function start_animation(name) {
     }
 
     action.play();
+}
+
+// Enable or Disable the shadow from the scene
+function change_shadow_state() {
+    scene.getObjectByName("directLight").castShadow = !scene.getObjectByName("directLight").castShadow;
+}
+
+// Disable or enable direct light
+function change_light_state() {
+    var light = scene.getObjectByName("directLight");
+    light.intensity = light.status ? 1.5 : 0;
+    light.status = !light.status;
 }

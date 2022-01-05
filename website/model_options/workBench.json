@@ -26,8 +26,8 @@
     },
 
     "textures": [
-        { "name": "Carvalho", "path": "Wood1_2k_Color.jpg", "price": 200, "materialName": "WoodM" },
-        { "name": "Cedro", "path": "Wood051_1K_Color.png", "price": 200, "materialName": "WoodM" }
+        { "name": "Carvalho", "path": "Wood1_2k_Color.jpg", "materialName": "WoodM" },
+        { "name": "Cedro", "path": "Wood051_1K_Color.png", "materialName": "WoodM" }
     ],
 
     "animations": {
