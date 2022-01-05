@@ -1,13 +1,13 @@
 class Model {
-    constructor(price, { animations: animations }) {
+    constructor(price, model_options_path, { animations: animations }) {
         this.price = price < 0 ? 0 : price;
         this.parts = [];
         this.textures = [];
         this.animations = [];
-        //this.selectedTextureIndex = -1;
+        this.model_options_path = model_options_path;
 
         this.addAnimations(animations);
-        this.addTextures(getTexturesFromJson());
+        this.addTextures(getTexturesFromJson(this.model_options_path));
     }
 
     getPrice() {
@@ -54,7 +54,7 @@ class Model {
         part.userData.oldMaterial = part.material.clone();
         part.userData.part = new Part();
         part.userData.part.addDefaultColor(part.material.color);
-        part.userData.part.addColors(getColorsFromJson(part.name));
+        part.userData.part.addColors(getColorsFromJson(part.name, this.model_options_path));
         this.parts.push(part);
     }
 

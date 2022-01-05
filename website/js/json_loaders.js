@@ -1,5 +1,5 @@
-async function getColorsFromJson(name) {
-    return await fetch("model_options/workBench.json")
+async function getColorsFromJson(name, model_options_path) {
+    return await fetch(model_options_path)
         .then((response) => response.json())
         .then((data) => {
             var colors = [];
@@ -19,8 +19,8 @@ async function getColorsFromJson(name) {
         });
 }
 
-async function getTexturesFromJson() {
-    return await fetch("model_options/workBench.json")
+async function getTexturesFromJson(model_options_path) {
+    return await fetch(model_options_path)
         .then((response) => response.json())
         .then((data) => {
             return data.textures;
@@ -30,11 +30,22 @@ async function getTexturesFromJson() {
         });
 }
 
-async function getAnimationImagesFromJson() {
-    return await fetch("model_options/workBench.json")
+async function getAnimationImagesFromJson(model_options_path) {
+    return await fetch(model_options_path)
         .then((response) => response.json())
         .then((data) => {
             return data.animations;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+async function getProducts() {
+    return await fetch("products.json")
+        .then((response) => response.json())
+        .then((data) => {
+            return data;
         })
         .catch((error) => {
             console.error(error);

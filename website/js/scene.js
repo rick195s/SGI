@@ -6,14 +6,14 @@ function set_scene() {
     renderer = create_render(canvas);
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 1.8;
-
     camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     scene.add(camera);
-
+    //0x080808
     // const plane = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0xffffff }));
     // plane.rotation.x = -Math.PI / 2;
     // plane.receiveShadow = true;
     // scene.add(plane);
+
     // user controls to the scene
     new THREE.OrbitControls(camera, renderer.domElement);
     update_window(renderer, camera, width, window.innerHeight);
@@ -50,10 +50,8 @@ function create_render(to_canvas) {
 // Create camera
 function create_perspective_camera(aspect) {
     var camera = new THREE.PerspectiveCamera(60, aspect, 1, 500);
-    camera.position.x = 0;
-    camera.position.y = 15;
-    camera.position.z = 15;
-    //camera.lookAt(0, 2.5, 0);
+    camera.position.y = 16;
+    camera.position.z = 17;
 
     return camera;
 }
@@ -70,7 +68,8 @@ function set_canvas() {
         "</div>";
 
     document.getElementById("canvasDiv").innerHTML = html;
-    show_animations(getAnimationImagesFromJson());
+    show_animations(getAnimationImagesFromJson(model.model_options_path));
+    scene_options();
 }
 
 function update_window(renderer, camara, width, height) {
@@ -91,6 +90,7 @@ function add_light_to(scene) {
     directLight.shadow.mapSize.width = 1024 * 4;
     directLight.shadow.mapSize.heigh = 1024 * 4;
     directLight.name = "directLight";
+    directLight.state = true;
     scene.add(directLight);
 
     hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.5);

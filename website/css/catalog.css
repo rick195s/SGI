@@ -1,12 +1,10 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: #ededed !important;
+    /*background-color: #efefef;*/
     /* Hide scrollbars */
 }
-.navbar {
-    background: #6ab446;
-}
+
 .nav-link,
 .navbar-brand {
     color: #fff;
@@ -20,13 +18,6 @@ body {
 }
 .navbar-collapse {
     justify-content: flex-end;
-}
-footer {
-    background-color: #dd2f2f !important;
-    color: white !important;
-    border-top: 10px solid #000000;
-    padding-left: 20px;
-    bottom: 0px;
 }
 
 #logo {
@@ -50,6 +41,14 @@ footer {
 .foto-produto {
     width: 320px; /* you can use % */
     height: auto;
-    border: 3px solid transparent;
-    border-color: #dd2f2f;
+    border: 1px solid transparent;
+    border-color: #191919;
+}
+
+#catalog {
+    margin-top: 30px;
+}
+#catalog a {
+    text-decoration: none;
+    color: inherit;
 }
