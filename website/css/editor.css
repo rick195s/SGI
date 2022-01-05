@@ -39,6 +39,10 @@ body {
     margin-bottom: 100px;
 }
 
+#price {
+    font-size: 20px;
+}
+
 #priceDiv {
     display: block;
     width: inherit;
@@ -65,10 +69,12 @@ body {
     width: 100%;
     background-color: transparent;
     border-radius: 4px;
+    font-size: 14px;
 }
 
 .item_color_card:hover,
-.item_texture_card:hover {
+.item_texture_card:hover,
+.selected {
     background-color: #f0f6f6;
     cursor: pointer;
 }
@@ -113,4 +119,43 @@ body {
     left: 5px;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.selected {
+    position: relative;
+}
+.selected .lr-tick {
+    position: absolute;
+    margin-top: 0;
+    background-color: #04857f;
+    border: thin solid #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    left: 20%;
+    bottom: 35%;
+}
+.selected .lr-tick::before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    width: 5px;
+    bottom: 9px;
+    left: 5px;
+    background-color: #fff !important;
+}
+
+.selected .lr-tick::after {
+    bottom: 10px;
+    left: 7px;
+    background-color: #fff !important;
+    transform: rotate(-45deg);
+    width: 10px;
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    height: 2px;
+    border-radius: 2px;
 }
