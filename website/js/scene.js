@@ -9,10 +9,11 @@ function set_scene() {
     camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     scene.add(camera);
     //0x080808
-    // const plane = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0xffffff }));
-    // plane.rotation.x = -Math.PI / 2;
-    // plane.receiveShadow = true;
-    // scene.add(plane);
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0xffffff }));
+    plane.rotation.x = -Math.PI / 2;
+    plane.receiveShadow = true;
+    plane.name = "Plane";
+    scene.add(plane);
 
     // user controls to the scene
     new THREE.OrbitControls(camera, renderer.domElement);
