@@ -17,15 +17,18 @@ function update_catalog(products) {
                 '<img class="card-img-top foto-produto" src="' +
                 products[i].img +
                 '" alt="' +
-                products[i].name +
+                products[i].display_name +
                 '">' +
                 '<div class="card-body">' +
+                '<p class="card-category">' +
+                products[i].category +
+                "</p>" +
                 '<p class="card-text">' +
-                products[i].name +
+                products[i].display_name +
                 "</p>" +
                 '<span class="price sale">' +
                 products[i].basePrice +
-                "€</span>" +
+                " €</span>" +
                 "</div>" +
                 "</div>" +
                 "</a>";
