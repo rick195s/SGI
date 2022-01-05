@@ -40,6 +40,7 @@ function change_item_color(value, save) {
     if (save) {
         clickedObject.object.userData.oldMaterial.copy(clickedObject.object.material);
         clickedObject.object.material.color.copy(clickedObject.object.userData.part.changeColor(value));
+        update_selected_card(value);
         update_price();
     }
 }
@@ -63,6 +64,17 @@ function start_change_item_texture(value, save) {
             change_item_texture(texture, save);
         }
     );
+}
+
+function update_selected_card(value) {
+    var colors = document.getElementsByClassName("item_color_card");
+
+    for (let i = 0; i < colors.length; i++) {
+        colors[i].classList.remove("selected");
+    }
+
+    var element = document.getElementById("color-" + value);
+    element.classList.add("selected");
 }
 
 // Change item texture

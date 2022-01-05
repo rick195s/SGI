@@ -67,13 +67,15 @@ function renderizar() {
 function change_html(object) {
     set_option_tab();
     document.getElementById("obejctName").innerHTML = object.name;
-    update_item_colors(object.userData.part.getColors());
-    update_item_textures(model.getTextures(object.material.name));
+    update_color_options(object.userData.part.getColors());
+
+    update_texture_options(model.getTextures(object.material.name));
+
     update_price();
 }
 
 // Change the textures html from the right tab
-function update_item_textures(textures) {
+function update_texture_options(textures) {
     html = "";
 
     // Updating the html of the colors tab
@@ -84,7 +86,7 @@ function update_item_textures(textures) {
                 '<div  class="item_texture_card">' +
                 '<img  src="3D Model/materials/' +
                 textures[i].path +
-                '" class="bg-dark rounded-circle" style="height: 75px; width: 75px">' +
+                '" class="bg-dark rounded-circle" style="height: 70px; width: 70px">' +
                 "<p>" +
                 textures[i].name +
                 "</p>" +
@@ -111,7 +113,7 @@ function update_item_textures(textures) {
 }
 
 // Change the colors html from the right tab
-function update_item_colors(colors) {
+function update_color_options(colors) {
     set_loader("item_colors");
     render_images(colors).then((images) => {
         var html = "";
@@ -121,13 +123,16 @@ function update_item_colors(colors) {
             for (let i = 0; i < colors.length; i++) {
                 html +=
                     '<div class="col-lg-4">' +
-                    '<div  class="item_color_card">' +
+                    '<div id="color-' +
+                    i +
+                    '" class="item_color_card">' +
                     //'<span class="rounded-circle" style="height: 75px; width: 75px; background-color: #' +
                     //colors[i].getHexString() +
                     //'"></span>' +
+                    '<span class="lr-tick"></span>' +
                     '<img  src="' +
                     images[i].src +
-                    '" class="bg-dark rounded-circle" style="height: 75px; width: 75px">' +
+                    '" class=" rounded-circle"  style="height: 70px; width: 70px">' +
                     "<p>" +
                     colors[i].name +
                     "</p>" +
@@ -151,6 +156,7 @@ function update_item_colors(colors) {
             elements[i].onmouseenter = () => change_item_color(i, false);
             elements[i].onmouseleave = () => reset_item_material();
         }
+        update_selected_card(clickedObject.object.userData.part.selectedColorIndex);
     });
 }
 

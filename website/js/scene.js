@@ -8,7 +8,8 @@ function set_scene() {
     renderer.toneMappingExposure = 1.8;
     camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     scene.add(camera);
-    //0x080808
+
+    // scene plane
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0xffffff }));
     plane.rotation.x = -Math.PI / 2;
     plane.receiveShadow = true;
