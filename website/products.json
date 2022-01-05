@@ -1,9 +1,21 @@
 [
     {
         "name": "workBench",
-        "img": "img/mobilia.png",
-        "basePrice": 600,
+        "img": "img/renders/workBench.png",
+        "basePrice": 269.11,
         "model_3d": "3D Model/workBenchM_animation.gltf",
-        "model_options": "model_options/workBench.json"
+        "model_options": "model_options/workBench.json",
+        "display_name": "Mesa de jardinagem",
+        "category": "LA REDOUTE INTERIEURS"
+    },
+
+    {
+        "name": "workBench",
+        "img": "img/renders/workBench.png",
+        "basePrice": 269.11,
+        "model_3d": "3D Model/workBenchM_animation.gltf",
+        "model_options": "model_options/workBench.json",
+        "display_name": "Mesa de jardinagem",
+        "category": "LA REDOUTE INTERIEURS"
     }
 ]

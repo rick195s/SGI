@@ -41,14 +41,38 @@ body {
 .foto-produto {
     width: 320px; /* you can use % */
     height: auto;
-    border: 1px solid transparent;
-    border-color: #191919;
 }
 
 #catalog {
     margin-top: 30px;
 }
+
 #catalog a {
     text-decoration: none;
     color: inherit;
+}
+
+.card {
+    border: 1px solid transparent;
+    border-color: #191919;
+    margin: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+.card-category {
+    font-weight: 600;
+}
+
+.card-body * {
+    font-size: 14px;
+    margin: 0;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: 600;
 }

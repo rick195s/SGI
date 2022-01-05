@@ -12,72 +12,12 @@
                 1,
                 2,
                 3,
-                4,
-                5,
-                6,
-                7,
-                12,
-                13
+                8,
+                9
             ]
         }
     ],
     "nodes" : [
-        {
-            "name" : "Back_Camera",
-            "rotation" : [
-                0.001038214424625039,
-                -0.8038555979728699,
-                0.5948219299316406,
-                0.001403065980412066
-            ],
-            "translation" : [
-                0,
-                14.850003242492676,
-                -38.178462982177734
-            ]
-        },
-        {
-            "name" : "Front_Camera",
-            "rotation" : [
-                0.6320293545722961,
-                0,
-                0,
-                0.7749444842338562
-            ],
-            "translation" : [
-                0,
-                10.720002174377441,
-                38.839996337890625
-            ]
-        },
-        {
-            "name" : "right_light",
-            "rotation" : [
-                -0.22101669013500214,
-                -0.6957200169563293,
-                -0.10493316501379013,
-                -0.6753623485565186
-            ],
-            "translation" : [
-                16.39999771118164,
-                10.884782791137695,
-                5.119999885559082
-            ]
-        },
-        {
-            "name" : "front_light",
-            "rotation" : [
-                0.6294973492622375,
-                0,
-                0,
-                0.7770026326179504
-            ],
-            "translation" : [
-                0,
-                26.30999755859375,
-                19.139999389648438
-            ]
-        },
         {
             "mesh" : 0,
             "name" : "stoneBench",
@@ -172,10 +112,10 @@
         },
         {
             "children" : [
-                10,
-                11,
-                8,
-                9
+                6,
+                7,
+                4,
+                5
             ],
             "name" : "Armature",
             "rotation" : [
@@ -211,7 +151,7 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 5,
+                        "node" : 1,
                         "path" : "rotation"
                     }
                 }
@@ -230,7 +170,7 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 7,
+                        "node" : 3,
                         "path" : "rotation"
                     }
                 }
@@ -249,42 +189,42 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 8,
+                        "node" : 4,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 8,
+                        "node" : 4,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 8,
+                        "node" : 4,
                         "path" : "scale"
                     }
                 },
                 {
                     "sampler" : 3,
                     "target" : {
-                        "node" : 9,
+                        "node" : 5,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 4,
                     "target" : {
-                        "node" : 9,
+                        "node" : 5,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 5,
                     "target" : {
-                        "node" : 9,
+                        "node" : 5,
                         "path" : "scale"
                     }
                 }
@@ -465,8 +405,8 @@
         {
             "inverseBindMatrices" : 21,
             "joints" : [
-                8,
-                9
+                4,
+                5
             ],
             "name" : "Armature"
         }
