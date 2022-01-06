@@ -14,6 +14,7 @@ function set_scene() {
     plane.rotation.x = -Math.PI / 2;
     plane.receiveShadow = true;
     plane.name = "Plane";
+    plane.visible = false;
     scene.add(plane);
 
     // user controls to the scene
@@ -52,8 +53,8 @@ function create_render(to_canvas) {
 // Create camera
 function create_perspective_camera(aspect) {
     var camera = new THREE.PerspectiveCamera(60, aspect, 1, 500);
-    camera.position.y = 16;
-    camera.position.z = 17;
+    camera.position.y = 15;
+    camera.position.z = 15;
 
     return camera;
 }
