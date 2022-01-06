@@ -217,10 +217,9 @@ async function render_images(colors) {
 function set_render_image_camera() {
     var screen_camera = create_perspective_camera(window.innerWidth / window.innerHeight);
     screen_camera.position.copy(clickedObject.object.position);
-    screen_camera.position.y += 4;
-    screen_camera.position.z += 4;
-
-    screen_camera.lookAt(clickedObject.object.position);
+    screen_camera.position.z = 18;
+    screen_camera.position.z = 5;
+    screen_camera.rotation.copy(clickedObject.object.quaternion);
 
     var width = document.getElementById("canvasDiv").offsetWidth;
 
