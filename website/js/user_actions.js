@@ -134,7 +134,11 @@ function start_animation(name) {
 
 // Enable or Disable the shadow from the scene
 function change_shadow_state() {
-    scene.getObjectByName("directLight").castShadow = !scene.getObjectByName("directLight").castShadow;
+    scene.children.forEach((node) => {
+        if (node instanceof THREE.DirectionalLight) {
+            node.castShadow = !node.castShadow;
+        }
+    });
 }
 
 // Disable or enable direct light

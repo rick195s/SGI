@@ -48,6 +48,7 @@ class Model {
     addPart(part) {
         part.castShadow = true;
         part.receiveShadow = true;
+
         // Cloning the material because exist objects sharing the same material
         part.material = part.material.clone();
         // Storing a back-up material
