@@ -12,42 +12,11 @@
                 1,
                 2,
                 3,
-                4,
-                5,
-                10,
-                11
+                8
             ]
         }
     ],
     "nodes" : [
-        {
-            "name" : "Back_Camera",
-            "rotation" : [
-                0.001038214424625039,
-                -0.8038555979728699,
-                0.5948219299316406,
-                0.001403065980412066
-            ],
-            "translation" : [
-                0,
-                14.850003242492676,
-                -38.178462982177734
-            ]
-        },
-        {
-            "name" : "Front_Camera",
-            "rotation" : [
-                0.6263410449028015,
-                -0.14305858314037323,
-                0.1183483675122261,
-                0.7571162581443787
-            ],
-            "translation" : [
-                -13,
-                10.740001678466797,
-                32.29999923706055
-            ]
-        },
         {
             "mesh" : 0,
             "name" : "stoneBench",
@@ -142,10 +111,10 @@
         },
         {
             "children" : [
-                8,
-                9,
                 6,
-                7
+                7,
+                4,
+                5
             ],
             "name" : "Armature",
             "rotation" : [
@@ -159,20 +128,6 @@
                 7.927988052368164,
                 -2.500659704208374
             ]
-        },
-        {
-            "name" : "Camera",
-            "rotation" : [
-                0.6038987636566162,
-                -0.08852611482143402,
-                0.0677381083369255,
-                0.789228081703186
-            ],
-            "translation" : [
-                0.009999990463256836,
-                5.210000038146973,
-                16.3700008392334
-            ]
         }
     ],
     "animations" : [
@@ -181,7 +136,7 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 3,
+                        "node" : 1,
                         "path" : "rotation"
                     }
                 }
@@ -200,7 +155,7 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 5,
+                        "node" : 3,
                         "path" : "rotation"
                     }
                 }
@@ -219,42 +174,42 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 6,
+                        "node" : 4,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 1,
                     "target" : {
-                        "node" : 6,
+                        "node" : 4,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 2,
                     "target" : {
-                        "node" : 6,
+                        "node" : 4,
                         "path" : "scale"
                     }
                 },
                 {
                     "sampler" : 3,
                     "target" : {
-                        "node" : 7,
+                        "node" : 5,
                         "path" : "translation"
                     }
                 },
                 {
                     "sampler" : 4,
                     "target" : {
-                        "node" : 7,
+                        "node" : 5,
                         "path" : "rotation"
                     }
                 },
                 {
                     "sampler" : 5,
                     "target" : {
-                        "node" : 7,
+                        "node" : 5,
                         "path" : "scale"
                     }
                 }
@@ -435,8 +390,8 @@
         {
             "inverseBindMatrices" : 21,
             "joints" : [
-                6,
-                7
+                4,
+                5
             ],
             "name" : "Armature"
         }

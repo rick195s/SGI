@@ -86,16 +86,32 @@ function add_light_to(scene) {
     var luzPoint = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(luzPoint);
 
-    // Sun Light
-    directLight = new THREE.DirectionalLight(0xffa95c, 1.5);
+    // Back light
+    var backLight = new THREE.DirectionalLight(0xfcffff, 1.2);
+    backLight.position.x = 13;
+    backLight.position.y = -6;
+    backLight.position.z = 19;
+    backLight.castShadow = true;
+    backLight.shadow.bias = -0.0001;
+    scene.add(backLight);
+
+    // front right light
+    var frontRightLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    frontRightLight.position.x = 11;
+    frontRightLight.position.y = 30;
+    frontRightLight.position.z = 11;
+    frontRightLight.castShadow = true;
+    frontRightLight.shadow.bias = -0.0001;
+    scene.add(frontRightLight);
+
+    // front left light
+    directLight = new THREE.DirectionalLight(0xffe6ed, 1.5);
+    directLight.position.x = -12;
+    directLight.position.y = -7;
+    directLight.position.z = 15;
     directLight.castShadow = true;
     directLight.shadow.bias = -0.0001;
-    directLight.shadow.mapSize.width = 1024 * 4;
-    directLight.shadow.mapSize.heigh = 1024 * 4;
     directLight.name = "directLight";
     directLight.state = true;
     scene.add(directLight);
-
-    hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.5);
-    scene.add(hemisphereLight);
 }
